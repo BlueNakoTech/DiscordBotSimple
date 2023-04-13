@@ -1,0 +1,17 @@
+{
+  "name": "discordbotsimple",
+  "version": "1.0.0",
+  "description": "Project_Bot_Simple",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ."
+  },
+  "author": "Detrama",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.9.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.38.0"
+  }
+}
