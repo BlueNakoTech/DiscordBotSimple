@@ -3,6 +3,16 @@ const { clientId, guildId, token } = require('./config.json');
 const fs = require('node:fs');
 const path = require('node:path');
 
+const admin = require('firebase-admin');
+const EventEmitter = require('events');
+
+const serviceAccount = require('./firebase/firebase.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+
 const commands = [];
 // Grab all the command files from the commands directory you created earlier
 const foldersPath = path.join(__dirname, 'commands');
