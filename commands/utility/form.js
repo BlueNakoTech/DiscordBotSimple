@@ -37,7 +37,7 @@ module.exports = {
 
             .setFooter({
               iconURL: interaction.client.user.displayAvatarURL(),
-              text: "Squadron Secretary",
+              text: `${interaction.client.user.username} - Squadron Secretary`,
             })
           return embed;
         });
