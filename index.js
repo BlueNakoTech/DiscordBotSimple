@@ -1,8 +1,9 @@
 // Require the necessary discord.js classes
 const fs = require("node:fs");
 const path = require("node:path");
-const { Client, Collection, Events, GatewayIntentBits, EmbedBuilder } = require("discord.js");
-const { token, channelId, guildId, captainId } = require("./config.json");
+const { Client, Collection, Events} = require("discord.js");
+const { channelId_dev, guildId_DEV, captainId } = require("./config.json");
+const { token } = require("./tokenId.json")
 const firestoreListener = require("./firebase/firestoreListener");
 
 // Create a new client instance
@@ -53,12 +54,12 @@ client.once(Events.ClientReady, (c) => {
   firestoreListener.on("newDocument", (dataString) => {
     console.log(`New document added`);
     
-    const guild = client.guilds.cache.get(guildId);
-    const channel = guild.channels.cache.get(channelId);
+    const guild = client.guilds.cache.get(guildId_DEV);
+    const channel = guild.channels.cache.get(channelId_dev);
 
     channel.send(
 
-      `Sensei!! <@${captainId}>  \nThere is new Recruit form for War Thunder \nPlease type /form to view`
+      `<@${captainId}>-Sensei!!   \nThere is new **Recruit** form for **War Thunder** \nPlease type "**/form**" to view`
       
       
       // `Sensei!! There is new Recruit form for War Thunder. 
