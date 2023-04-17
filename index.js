@@ -2,7 +2,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { Client, Collection, Events} = require("discord.js");
-const { channelId_dev, guildId_DEV, captainId } = require("./config.json");
+const { channelId_live, guildId_LIVE, captainId } = require("./config.json");
 const { token } = require("./tokenId.json")
 const firestoreListener = require("./firebase/firestoreListener");
 
@@ -11,6 +11,7 @@ const client = new Client({
   intents: 32767
 });
 client.commands = new Collection();
+
 
 const foldersPath = path.join(__dirname, "commands");
 const commandFolders = fs.readdirSync(foldersPath);
@@ -49,13 +50,15 @@ for (const file of eventFiles) {
   }
 }
 
+
+
 client.once(Events.ClientReady, (c) => {
   console.log(`Firebase Ready`);
   firestoreListener.on("newDocument", (dataString) => {
     console.log(`New document added`);
     
-    const guild = client.guilds.cache.get(guildId_DEV);
-    const channel = guild.channels.cache.get(channelId_dev);
+    const guild = client.guilds.cache.get(guildId_LIVE);
+    const channel = guild.channels.cache.get(channelId_live);
 
     channel.send(
 
@@ -74,7 +77,6 @@ client.once(Events.ClientReady, (c) => {
 
 
  
-
 
 // Log in to Discord with your client's token
 client.login(token);
