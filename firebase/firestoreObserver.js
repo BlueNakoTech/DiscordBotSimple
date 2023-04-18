@@ -64,5 +64,10 @@ async  getDocFieldData(documentId) {
     await targetRef.set(sourceDoc.data());
   
     // Delete the source document
-  }
+  },
+
+ 
+  
+  
+  
 }
