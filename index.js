@@ -1,9 +1,10 @@
 // Require the necessary discord.js classes
 const fs = require("node:fs");
 const path = require("node:path");
-const { Client, Collection, Events, EmbedBuilder } = require("discord.js");
-const { channelId_dev, guildId_DEV, captainId } = require("./config.json");
+const { Client, Collection, Events, EmbedBuilder, UserManager } = require("discord.js");
+const { channelId_dev, guildId_DEV, captainId, channelId_ann } = require("./config.json");
 const { token } = require("./tokenId.json");
+const firestoreListenerUser = require("./firebase/firestoreListenerUsers")
 const firestoreListener = require("./firebase/firestoreListener");
 const { google } = require("googleapis");
 const admin = require('firebase-admin');
@@ -122,11 +123,32 @@ client.once(Events.ClientReady, (c) => {
       // \nName: ${dataString.Nama}`
     );
   });
+
+  firestoreListenerUser.on("newUsers", async (dataString) =>  {
+    console.log(`New Users Added`);
+
+    const guild = client.guilds.cache.get(guildId_DEV);
+    const channel = guild.channels.cache.get(channelId_ann);
+    const jsonData = dataString.discord
+    const jsonString = JSON.parse(jsonData)
+
+    // const tag = 'FrostNii#7049';
+    // const userId = await getUserIdFromTag(tag);
+    // console.log(userId); // Output: 1234567890 (the user ID corresponding to the tag)
+   
+
+    setTimeout(() => {
+      channel.send(`<@${captainId}>-Sensei!!   \nThere is new <@${jsonString}> added `);
+  }, 5000); // 5000ms or 5 seconds delay
+
+    
+  });
 });
 
-client.on('ready', () => {
-  console.log(`AutoRole Set`);
-});
+async function getUserIdFromTag(tag) {
+  const user = await client.users.fetch({ tag: tag });
+  return user.id;
+}
 
 // Start the Firestore observer
 
