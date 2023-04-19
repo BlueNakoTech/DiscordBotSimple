@@ -9,8 +9,8 @@ const {
   UserManager,
 } = require("discord.js");
 const {
-  channelId_dev,
-  guildId_DEV,
+  channelId_live,
+  guildId_LIVE,
   captainId,
   channelId_ann,
 } = require("./config.json");
@@ -115,8 +115,8 @@ client.once(Events.ClientReady, (c) => {
   firestoreListener.on("newDocument", (dataString) => {
     console.log(`New document added`);
 
-    const guild = client.guilds.cache.get(guildId_DEV);
-    const channel = guild.channels.cache.get(channelId_dev);
+    const guild = client.guilds.cache.get(guildId_LIVE);
+    const channel = guild.channels.cache.get(channelId_live);
 
     channel.send(
       `<@${captainId}>-Sensei!!   \nThere is new **Recruit** form for **War Thunder** \nPlease type "**/form**" to view`
@@ -133,7 +133,7 @@ client.once(Events.ClientReady, (c) => {
   firestoreListenerUser.on("newUsers", async (dataString) => {
     console.log(`New Users Added`);
 
-    const guild = client.guilds.cache.get(guildId_DEV);
+    const guild = client.guilds.cache.get(guildId_LIVE);
     const channel = guild.channels.cache.get(channelId_ann);
     const jsonData = dataString.discord;
     const jsonString = JSON.parse(jsonData);

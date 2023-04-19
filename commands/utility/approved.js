@@ -53,7 +53,7 @@ module.exports = {
       
       
 
-      // await deleteFirestoreData(documentId);
+      await deleteFirestoreData(documentId);
       const embed = new EmbedBuilder()
         .setTitle(`Application Approved`)
         .setDescription(`application for join has been approved`)

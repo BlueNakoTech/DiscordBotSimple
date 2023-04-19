@@ -47,7 +47,7 @@ module.exports = {
       await interaction.options.getString("reg-id");
       const discordId = await getDocFieldData(documentId);
       const username = await JSON.parse(discordId);
-      // await deleteFirestoreData(documentId);
+      await deleteFirestoreData(documentId);
       const embed = new EmbedBuilder()
         .setTitle(`Application Rejected`)
         .setDescription(`application for join has been rejected`)
@@ -64,7 +64,7 @@ module.exports = {
         })
         .addFields([
           {
-            name: `Username:`,
+            name: `Discord Tag:`,
             value: `${username}`,
             inline: true,
           },
