@@ -70,12 +70,12 @@ module.exports = {
         })
         .addFields([
           {
-            name: `Username`,
+            name: `Discord Tag:`,
             value: `${username}`,
             inline: true,
           },
           {
-            name: `Approved by`,
+            name: `Approved by:`,
             value: `<@${interaction.user.id}>`,
             inline: true,
           },

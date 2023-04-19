@@ -1,13 +1,24 @@
 // Require the necessary discord.js classes
 const fs = require("node:fs");
 const path = require("node:path");
-const { Client, Collection, Events, EmbedBuilder, UserManager } = require("discord.js");
-const { channelId_dev, guildId_DEV, captainId, channelId_ann } = require("./config.json");
+const {
+  Client,
+  Collection,
+  Events,
+  EmbedBuilder,
+  UserManager,
+} = require("discord.js");
+const {
+  channelId_dev,
+  guildId_DEV,
+  captainId,
+  channelId_ann,
+} = require("./config.json");
 const { token } = require("./tokenId.json");
-const firestoreListenerUser = require("./firebase/firestoreListenerUsers")
+const firestoreListenerUser = require("./firebase/firestoreListenerUsers");
 const firestoreListener = require("./firebase/firestoreListener");
 const { google } = require("googleapis");
-const admin = require('firebase-admin');
+const admin = require("firebase-admin");
 const db = admin.firestore;
 
 // Create a new client instance
@@ -66,7 +77,6 @@ client.on("message", async (message) => {
   // Extract the channelId from the response
   const channelId = await responseid.data.items[0].id;
   if (message.content === "!live") {
-    
     // Make a request to the YouTube API to get the live stream details
     const response = await youtube.liveBroadcasts.list({
       part: "snippet",
@@ -77,7 +87,6 @@ client.on("message", async (message) => {
 
     // Extract the live stream details from the response
     const liveBroadcast = response.data.items[0];
-    
 
     // Create a new message embed with information about the live stream
     const embed = new EmbedBuilder()
@@ -97,12 +106,9 @@ client.on("message", async (message) => {
     channel.send(embed);
 
     // Listen for new messages in the live stream chat
-   
   }
 });
 // Set up the YouTube API client
-
-
 
 client.once(Events.ClientReady, (c) => {
   console.log(`Firebase Ready`);
@@ -124,37 +130,38 @@ client.once(Events.ClientReady, (c) => {
     );
   });
 
-  firestoreListenerUser.on("newUsers", async (dataString) =>  {
+  firestoreListenerUser.on("newUsers", async (dataString) => {
     console.log(`New Users Added`);
 
     const guild = client.guilds.cache.get(guildId_DEV);
     const channel = guild.channels.cache.get(channelId_ann);
-    const jsonData = dataString.discord
-    const jsonString = JSON.parse(jsonData)
+    const jsonData = dataString.discord;
+    const jsonString = JSON.parse(jsonData);
 
-    // const tag = 'FrostNii#7049';
-    // const userId = await getUserIdFromTag(tag);
-    // console.log(userId); // Output: 1234567890 (the user ID corresponding to the tag)
-   
+    const member = guild.members.cache.find(
+      (member) => member.user.tag === jsonString
+    );
+
+    if (!member) {
+      console.log(`Member with user tag ${jsonString} not found in guild.`);
+    }
+    const mentionString = member.toString();
+    assignRole(member);
 
     setTimeout(() => {
-      channel.send(`<@${captainId}>-Sensei!!   \nThere is new <@${jsonString}> added `);
-  }, 5000); // 5000ms or 5 seconds delay
-
-    
+      channel.send(
+        `${mentionString} Welcome to Squadron, \nMay the snail bless upon you`
+      );
+    }, 3000); // 3000ms or 3 seconds delay
   });
 });
 
-async function getUserIdFromTag(tag) {
-  const user = await client.users.fetch({ tag: tag });
-  return user.id;
-}
 
 // Start the Firestore observer
 
 // Function to assign a role to a member
 async function assignRole(member) {
-  const role = member.guild.roles.cache.find(r => r.name === 'War Thunder');
+  const role = member.guild.roles.cache.find((r) => r.name === "War Thunder");
   if (!role) {
     console.log(`Could not find role with name ROLE_NAME`);
     return;
@@ -163,7 +170,9 @@ async function assignRole(member) {
     await member.roles.add(role);
     console.log(`Added role ${role.name} to member ${member.user.tag}`);
   } catch (error) {
-    console.error(`Error assigning role to member ${member.user.tag}: ${error}`);
+    console.error(
+      `Error assigning role to member ${member.user.tag}: ${error}`
+    );
   }
 }
 // Log in to Discord with your client's token
