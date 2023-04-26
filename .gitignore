@@ -42,6 +42,7 @@ build/Release
 node_modules/
 jspm_packages/
 tokenId.json
+config_dev.json
 
 
 # Snowpack dependency directory (https://snowpack.dev/)
