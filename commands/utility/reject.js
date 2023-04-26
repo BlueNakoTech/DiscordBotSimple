@@ -2,9 +2,6 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const {
   deleteFirestoreData,
   getDocFieldData,
-  writeData,
-  getDiscordUserId,
-  moveDocument,
 } = require("../../firebase/firestoreObserver");
 const { captainId, channelId_ann } = require("../../config.json");
 
