@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { assignRole } = require('../../function/assignRole')
-const { wtRoleId } = require('../../config.json')
+const { wtRoleId, channelId_ann } = require('../../config.json')
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -16,7 +16,7 @@ module.exports = {
     try {
       await assignRole(member);
       setTimeout(() => {
-        const channel = interaction.guild.channels.cache.find(c => c.name === 'announcement');
+        const channel = interaction.guild.channels.cache.find(c => c.id === channelId_ann);
             if (channel) {
                 channel.send(`<@&${wtRoleId}> new member has joined \n<@${member.user.id}> Welcome to Squadron, \nMay the snail bless upon you`);
             }

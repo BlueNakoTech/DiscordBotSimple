@@ -1,4 +1,3 @@
-const { wtRoleId } = require('../config.json')
 
 
 module.exports = {
