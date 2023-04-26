@@ -9,11 +9,17 @@ const {
   UserManager,
 } = require("discord.js");
 const {
+  wtRoleId,
   channelId_live,
+  channelId_dev,
   guildId_LIVE,
+  guildId_DEV,
   captainId,
   channelId_ann,
 } = require("./config.json");
+const {
+ assignRole
+} = require("./function/assignRole");
 const { token } = require("./tokenId.json");
 const firestoreListenerUser = require("./firebase/firestoreListenerUsers");
 const firestoreListener = require("./firebase/firestoreListener");
@@ -64,76 +70,27 @@ for (const file of eventFiles) {
   }
 }
 
-const youtube = google.youtube({
-  version: "v3",
-  auth: "AIzaSyAJ6-Qi-0hSKuMG-k4EZXwBRmhnWuwGHCM",
-});
-client.on("message", async (message) => {
-  const responseid = youtube.channels.list({
-    part: "id",
-    forUsername: "Warthunder",
-  });
 
-  // Extract the channelId from the response
-  const channelId = await responseid.data.items[0].id;
-  if (message.content === "!live") {
-    // Make a request to the YouTube API to get the live stream details
-    const response = await youtube.liveBroadcasts.list({
-      part: "snippet",
-      broadcastType: "all",
-      eventType: "live",
-      channelId: channelId,
-    });
-
-    // Extract the live stream details from the response
-    const liveBroadcast = response.data.items[0];
-
-    // Create a new message embed with information about the live stream
-    const embed = new EmbedBuilder()
-      .setTitle(liveBroadcast.snippet.title)
-      .setDescription(liveBroadcast.snippet.description)
-      .setURL(`https://www.youtube.com/watch?v=${liveBroadcast.id}`)
-      .setThumbnail(liveBroadcast.snippet.thumbnails.default.url)
-      .addField("Channel", liveBroadcast.snippet.channelTitle)
-      .addField("Viewers", liveBroadcast.statistics.concurrentViewers, true)
-      .addField("Likes", liveBroadcast.statistics.likeCount, true)
-      .setFooter(
-        `${client.user.username} - ${liveBroadcast.snippet.publishedAt}`
-      );
-
-    // Send the embed message to the Discord channel
-    const channel = message.channel;
-    channel.send(embed);
-
-    // Listen for new messages in the live stream chat
-  }
-});
 // Set up the YouTube API client
 
 client.once(Events.ClientReady, (c) => {
   console.log(`Firebase Ready`);
   firestoreListener.on("newDocument", (dataString) => {
-    console.log(`New document added`);
+    console.log(`New Form added`);
 
-    const guild = client.guilds.cache.get(guildId_LIVE);
-    const channel = guild.channels.cache.get(channelId_live);
+    const guild = client.guilds.cache.get(guildId_DEV);
+    const channel = guild.channels.cache.get(channelId_dev);
 
     channel.send(
       `<@${captainId}>-Sensei!!   \nThere is new **Recruit** form for **War Thunder** \nPlease type "**/form**" to view`
 
-      // `Sensei!! There is new Recruit form for War Thunder.
-      // \nFrom
-      // \nDiscord User: ${dataString.Discord}
-      // \nIn-game Name: ${dataString.nickname}
-      // \nMain Nation: ${dataString.Negara}
-      // \nName: ${dataString.Nama}`
+      
     );
   });
 
   firestoreListenerUser.on("newUsers", async (dataString) => {
-    console.log(`New Users Added`);
 
-    const guild = client.guilds.cache.get(guildId_LIVE);
+    const guild = client.guilds.cache.get(guildId_DEV);
     const channel = guild.channels.cache.get(channelId_ann);
     const jsonData = dataString.discord;
     const jsonString = JSON.parse(jsonData);
@@ -150,30 +107,14 @@ client.once(Events.ClientReady, (c) => {
 
     setTimeout(() => {
       channel.send(
-        `${mentionString} Welcome to Squadron, \nMay the snail bless upon you`
+        `<@&${wtRoleId}> new member has joined \n<@${mentionString}> Welcome to Squadron, \nMay the snail bless upon you`
       );
-    }, 3000); // 3000ms or 3 seconds delay
+    }, 5000); // 5000ms or 5 seconds delay
   });
 });
 
 
-// Start the Firestore observer
 
-// Function to assign a role to a member
-async function assignRole(member) {
-  const role = member.guild.roles.cache.find((r) => r.name === "War Thunder");
-  if (!role) {
-    console.log(`Could not find role with name ROLE_NAME`);
-    return;
-  }
-  try {
-    await member.roles.add(role);
-    console.log(`Added role ${role.name} to member ${member.user.tag}`);
-  } catch (error) {
-    console.error(
-      `Error assigning role to member ${member.user.tag}: ${error}`
-    );
-  }
-}
+
 // Log in to Discord with your client's token
 client.login(token);
