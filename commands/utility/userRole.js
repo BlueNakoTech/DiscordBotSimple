@@ -27,10 +27,11 @@ module.exports = {
                 channel.send(`<@&${wtRoleId}> new member has joined \n<@${member.user.id}> Welcome to Squadron, \nMay the snail bless upon you`);
             }
       }, 5000);
-      return interaction.reply(`Added role to ${member.user.username}`);
+      return interaction.reply( {content:`Added role to ${member.user.username}`,
+      ephemeral: true});
     } catch (error) {
       console.error(error);
-      return interaction.reply('An error occurred while adding the role.');
+      return interaction.reply({content: 'An error occurred while adding the role.', ephemeral:true});
     }
   },
 };
