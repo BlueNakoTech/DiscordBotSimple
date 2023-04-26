@@ -1,13 +1,35 @@
 // Require the necessary discord.js classes
 const fs = require("node:fs");
 const path = require("node:path");
-const { Client, Collection, Events, GatewayIntentBits, EmbedBuilder } = require("discord.js");
-const { token, channelId, guildId, captainId } = require("./config.json");
+const {
+  Client,
+  Collection,
+  Events,
+  EmbedBuilder,
+  UserManager,
+} = require("discord.js");
+const {
+  wtRoleId,
+  channelId_live,
+  channelId_dev,
+  guildId_LIVE,
+  guildId_DEV,
+  captainId,
+  channelId_ann,
+} = require("./config.json");
+const {
+ assignRole
+} = require("./function/assignRole");
+const { token } = require("./tokenId.json");
+const firestoreListenerUser = require("./firebase/firestoreListenerUsers");
 const firestoreListener = require("./firebase/firestoreListener");
+const { google } = require("googleapis");
+const admin = require("firebase-admin");
+const db = admin.firestore;
 
 // Create a new client instance
 const client = new Client({
-  intents: 32767
+  intents: 32767,
 });
 client.commands = new Collection();
 
@@ -48,31 +70,50 @@ for (const file of eventFiles) {
   }
 }
 
+
+// Set up the YouTube API client
+
 client.once(Events.ClientReady, (c) => {
   console.log(`Firebase Ready`);
   firestoreListener.on("newDocument", (dataString) => {
-    console.log(`New document added`);
-    
-    const guild = client.guilds.cache.get(guildId);
-    const channel = guild.channels.cache.get(channelId);
+    console.log(`New Form added`);
+
+    const guild = client.guilds.cache.get(guildId_DEV);
+    const channel = guild.channels.cache.get(channelId_dev);
 
     channel.send(
+      `<@${captainId}>-Sensei!!   \nThere is new **Recruit** form for **War Thunder** \nPlease type "**/form**" to view`
 
-      `Sensei!! <@${captainId}>  \nThere is new Recruit form for War Thunder \nPlease type /form to view`
       
-      
-      // `Sensei!! There is new Recruit form for War Thunder. 
-      // \nFrom 
-      // \nDiscord User: ${dataString.Discord} 
-      // \nIn-game Name: ${dataString.nickname}
-      // \nMain Nation: ${dataString.Negara}
-      // \nName: ${dataString.Nama}`
     );
+  });
+
+  firestoreListenerUser.on("newUsers", async (dataString) => {
+
+    const guild = client.guilds.cache.get(guildId_DEV);
+    const channel = guild.channels.cache.get(channelId_ann);
+    const jsonData = dataString.discord;
+    const jsonString = JSON.parse(jsonData);
+
+    const member = guild.members.cache.find(
+      (member) => member.user.tag === jsonString
+    );
+
+    if (!member) {
+      console.log(`Member with user tag ${jsonString} not found in guild.`);
+    }
+    const mentionString = member.toString();
+    assignRole(member);
+
+    setTimeout(() => {
+      channel.send(
+        `<@&${wtRoleId}> new member has joined \n<@${mentionString}> Welcome to Squadron, \nMay the snail bless upon you`
+      );
+    }, 5000); // 5000ms or 5 seconds delay
   });
 });
 
 
- 
 
 
 // Log in to Discord with your client's token

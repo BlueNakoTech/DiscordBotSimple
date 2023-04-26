@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { captainId, channelId_ann, } = require("../../config.json")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -9,6 +10,12 @@ module.exports = {
 				.setDescription('The command to reload.')
 				.setRequired(true)),
 	async execute(interaction) {
+
+		if (interaction.user.id !== captainId) {
+      
+			return interaction.reply({content:'You do not have permission to use this command.', ephemeral: true});
+		  }
+
 		const commandName = interaction.options.getString('command', true).toLowerCase();
 		const command = interaction.client.commands.get(commandName);
 
