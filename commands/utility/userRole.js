@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { assignRole } = require('../../function/assignRole')
-const { wtRoleId, channelId_ann } = require('../../config.json')
+const { wtRoleId, channelId_ann, captainId } = require('../../config.json')
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -8,6 +8,12 @@ module.exports = {
 		.setDescription('Manually Set Role on User')
 		.addUserOption(option => option.setName('target').setDescription('The user\'s to add')),
 	async execute(interaction) {
+    if (interaction.user.id !== captainId) {
+      return interaction.reply({
+        content: "You do not have permission to use this command.",
+        ephemeral: true,
+      });
+    }
        
 		const member = interaction.options.getMember('target');
     if (!member) {

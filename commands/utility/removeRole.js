@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { removeRole } = require('../../function/removeRole')
-const { wtRoleId, channelId_ann } = require('../../config.json')
+const { wtRoleId, channelId_ann, captainId } = require('../../config.json')
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -8,6 +8,13 @@ module.exports = {
 		.setDescription('Manually Remove Role from User')
 		.addUserOption(option => option.setName('target').setDescription('The user\'s to remove')),
 	async execute(interaction) {
+
+    if (interaction.user.id !== captainId) {
+      return interaction.reply({
+        content: "You do not have permission to use this command.",
+        ephemeral: true,
+      });
+    }
        
 		const member = interaction.options.getMember('target');
     if (!member) {
