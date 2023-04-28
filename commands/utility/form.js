@@ -1,23 +1,19 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { getFirestoreData } = require("../../firebase/firestoreObserver");
-const { captainId, channelId_ann } = require("../../config.json");
+const { captainId, chiefId_1, chiefId_2 } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder().setName("form").setDescription("View"),
   async execute(interaction) {
-    // const requiredRole = interaction.guild.roles.cache.find(
-    //   (role) => role.name === "Admin"
-    // );
-    // if (!interaction.member.roles.cache.has(requiredRole.id)) {
-    //   return interaction.reply(
-    //     "You do not have permission to use this command."
-    //   );
-    // }
-    if (interaction.user.id !== captainId) {
-      return interaction.reply({
-        content: "You do not have permission to use this command.",
-        ephemeral: true,
+    const allowedUserIds = [captainId, chiefId_1, chiefId_2];
+    if (!allowedUserIds.includes(interaction.user.id)) {
+      console.log('Unrestricted Command');
+      return await interaction.reply({
+        content: "Sorry, you're not allowed to use this command.",
+        ephemeral: true, // Only the user who triggered the command can see this response
+        
       });
+      
     }
     try {
       const data = await getFirestoreData();
