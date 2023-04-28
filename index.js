@@ -11,7 +11,11 @@ const {
 const {
   wtRoleId,
   channelId,
+
+  
   guildId,
+  
+
   captainId,
   channelId_ann,
 } = require("./config.json");
