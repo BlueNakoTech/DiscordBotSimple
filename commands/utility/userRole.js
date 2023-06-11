@@ -32,7 +32,7 @@ module.exports = {
       setTimeout(() => {
         const channel = interaction.guild.channels.cache.find(c => c.id === channelId_ann);
             if (channel) {
-                channel.send(`<@&${wtRoleId}> new member has joined \n<@${member.user.id}> Welcome to Squadron, \nMay the snail bless upon you`);
+                channel.send(`<@&${wtRoleId}> new member has joined \n${member.user.id} Welcome to Squadron, \nMay the snail bless upon you`);
             }
       }, 5000);
       return interaction.reply( {content:`Added role to ${member.user.username}`,
