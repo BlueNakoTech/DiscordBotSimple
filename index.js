@@ -17,7 +17,7 @@ const {
 
   captainId,
   channelId_ann,
-} = require("./config_dev.json");
+} = require("./config.json");
 const {
   assignRole
 } = require("./function/assignRole");
