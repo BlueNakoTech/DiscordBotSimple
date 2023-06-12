@@ -3,7 +3,7 @@ const {
   deleteFirestoreData,
   getDocFieldData,
 } = require("../../firebase/firestoreObserver");
-const { captainId, channelId_ann, chiefId_1, chiefId_2 } = require("../../config.json");
+const { captainId, channelId_ann, chiefId_1, chiefId_2, logo_url } = require("../../config_dev.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -47,7 +47,7 @@ module.exports = {
         .setColor(0xff0000)
 
         .setThumbnail(
-          "https://cdn.discordapp.com/attachments/654304946447056899/1095208877953384469/Logo_tKRI.png"
+          logo_url
         )
         .setTimestamp(Date.now())
 

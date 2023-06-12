@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder,} = require("discord.js");
+const {logo_url} = require("../../config_dev.json");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,7 +11,7 @@ module.exports = {
         .setDescription(`Join our squadron at War Thunder`)
         .setColor(0x18e1ee)
         
-        .setThumbnail('https://cdn.discordapp.com/attachments/654304946447056899/1095208877953384469/Logo_tKRI.png')
+        .setThumbnail(logo_url)
         .setTimestamp(Date.now())
        
         .setFooter({

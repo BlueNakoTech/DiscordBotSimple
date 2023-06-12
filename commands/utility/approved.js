@@ -12,7 +12,7 @@ const {
   moveDocument,
   assignRole
 } = require("../../firebase/firestoreObserver");
-const { captainId, chiefId_1, chiefId_2, channelId_ann} = require("../../config.json");
+const { captainId, chiefId_1, chiefId_2, channelId_ann, logo_url} = require("../../config_dev.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -56,7 +56,7 @@ module.exports = {
         .setColor(0x00ff00)
 
         .setThumbnail(
-          "https://cdn.discordapp.com/attachments/654304946447056899/1095208877953384469/Logo_tKRI.png"
+          logo_url
         )
         .setTimestamp(Date.now())
 
