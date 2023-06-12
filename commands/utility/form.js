@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { getFirestoreData } = require("../../firebase/firestoreObserver");
-const { captainId, chiefId_1, chiefId_2, logo_url } = require("../../config_dev.json");
+const { captainId, chiefId_1, chiefId_2, logo_url } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder().setName("form").setDescription("View"),

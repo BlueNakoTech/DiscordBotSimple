@@ -3,7 +3,7 @@ const {
   deleteFirestoreData,
   getDocFieldData,
 } = require("../../firebase/firestoreObserver");
-const { captainId, channelId_ann, chiefId_1, chiefId_2, logo_url } = require("../../config_dev.json");
+const { captainId, channelId_ann, chiefId_1, chiefId_2, logo_url } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()

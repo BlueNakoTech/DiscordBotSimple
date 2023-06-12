@@ -12,7 +12,7 @@ const {
   moveDocument,
   assignRole
 } = require("../../firebase/firestoreObserver");
-const { captainId, chiefId_1, chiefId_2, channelId_ann, logo_url} = require("../../config_dev.json");
+const { captainId, chiefId_1, chiefId_2, channelId_ann, logo_url} = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
