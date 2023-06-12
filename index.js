@@ -14,7 +14,7 @@ const {
   clientId,
 
   guildId,
-
+  comchannel,
   captainId,
   channelId_ann,
 } = require("./config.json");
@@ -93,6 +93,7 @@ client.once(Events.ClientReady, (c) => {
 
     const guild = client.guilds.cache.get(guildId);
     const channel = guild.channels.cache.get(channelId_ann);
+    const channel_2 = guild.channels.cache.get(comchannel);
     const jsonData = dataString.discord;
     const jsonString = JSON.parse(jsonData);
 
@@ -103,7 +104,7 @@ client.once(Events.ClientReady, (c) => {
     if (!member) {
       console.log(`Member with user tag ${jsonString} not found in guild.`);
       setTimeout(() => {
-        channel.send({
+        channel_2.send({
           content: `<@${clientId}> unable to assign role for ${jsonString}, member has not found in server.\n<@${captainId}>-sensei, please check mannualy and proceed accordingly `,
           ephemeral: true
         });
