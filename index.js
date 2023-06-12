@@ -11,14 +11,15 @@ const {
 const {
   wtRoleId,
   channelId,
-  
+  clientId,
+
   guildId,
-  
+
   captainId,
   channelId_ann,
 } = require("./config_dev.json");
 const {
- assignRole
+  assignRole
 } = require("./function/assignRole");
 const { token } = require("./tokenId.json");
 const firestoreListenerUser = require("./firebase/firestoreListenerUsers");
@@ -84,7 +85,7 @@ client.once(Events.ClientReady, (c) => {
     channel.send(
       `<@${captainId}>-Sensei!!   \nThere is new **Recruit** form for **War Thunder** \nPlease type "**/form**" to view`
 
-      
+
     );
   });
 
@@ -101,7 +102,15 @@ client.once(Events.ClientReady, (c) => {
 
     if (!member) {
       console.log(`Member with user tag ${jsonString} not found in guild.`);
-    }
+      setTimeout(() => {
+        channel.send({
+          content: `<@${clientId}> unable to assign role for ${jsonString}, member has not found in server.\n<@${captainId}>-sensei, please check mannualy and proceed accordingly `,
+          ephemeral: true
+        });
+      }, 5000);
+      
+      
+    }else{
     const mentionString = member.toString();
     assignRole(member);
 
@@ -110,7 +119,8 @@ client.once(Events.ClientReady, (c) => {
         `<@&${wtRoleId}> new member has joined \n<@${mentionString}> Welcome to Squadron, \nMay the snail bless upon you`
       );
     }, 5000); // 5000ms or 5 seconds delay
-  });
+  }});
+
 });
 
 

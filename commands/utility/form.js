@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { getFirestoreData } = require("../../firebase/firestoreObserver");
-const { captainId, chiefId_1, chiefId_2 } = require("../../config.json");
+const { captainId, chiefId_1, chiefId_2, logo_url } = require("../../config_dev.json");
 
 module.exports = {
   data: new SlashCommandBuilder().setName("form").setDescription("View"),
@@ -9,7 +9,7 @@ module.exports = {
     if (!allowedUserIds.includes(interaction.user.id)) {
       console.log('Unrestricted Command');
       return await interaction.reply({
-        content: "Sorry, you're not allowed to use this command.",
+        content: "Maaf, anda tidak diperpolehkan menggunakan perintah ini",
         ephemeral: true, // Only the user who triggered the command can see this response
         
       });
@@ -19,20 +19,20 @@ module.exports = {
       const data = await getFirestoreData();
       if (data.length === 0) {
         await interaction.reply({
-          content: "No data available.",
+          content: "Tidak ada Data",
           ephemeral: true,
         });
       } else {
         const embeds = data.map((doc) => {
           const embed = new EmbedBuilder()
             .setColor("#0099ff")
-            .setTitle("New Recruit for T.K.R.I")
+            .setTitle("New Recruit for Q.E.D")
             .setThumbnail(
-              "https://cdn.discordapp.com/attachments/654304946447056899/1095208877953384469/Logo_tKRI.png"
+              logo_url
             )
             .addFields(
               { name: "Discord", value: doc.Discord.toString() },
-              { name: "Name", value: doc.Nama.toString() },
+              { name: "Nama", value: doc.Nama.toString() },
 
               {
                 name: "In-game Name",
@@ -40,7 +40,7 @@ module.exports = {
                 inline: true,
               },
               { name: "Reg. ID", value: doc.id, inline: true },
-              { name: "Main Nation", value: `${doc.Negara.toString()}` }
+              { name: "Negara Utama", value: `${doc.Negara.toString()}` }
             )
 
             .setFooter({
