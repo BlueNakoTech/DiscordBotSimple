@@ -80,7 +80,7 @@ client.once(Events.ClientReady, (c) => {
     console.log(`New Form added`);
 
     const guild = client.guilds.cache.get(guildId);
-    const channel = guild.channels.cache.get(channelId);
+    const channel = guild.channels.cache.get(comchannel);
 
     channel.send(
       `<@${captainId}>-Sensei!!   \nThere is new **Recruit** form for **War Thunder** \nPlease type "**/form**" to view`
@@ -105,7 +105,7 @@ client.once(Events.ClientReady, (c) => {
       console.log(`Member with user tag ${jsonString} not found in guild.`);
       setTimeout(() => {
         channel_2.send({
-          content: `<@${clientId}> unable to assign role for ${jsonString}, member has not found in server.\n<@${captainId}>-sensei, please check mannualy and proceed accordingly `,
+          content: `<@${clientId}> unable to assign role for ${jsonString}, member has not found in server.\n<@${captainId}>-sensei, please check and proceed accordingly `,
           ephemeral: true
         });
       }, 5000);
@@ -117,7 +117,7 @@ client.once(Events.ClientReady, (c) => {
 
     setTimeout(() => {
       channel.send(
-        `<@&${wtRoleId}> new member has joined \n<@${mentionString}> Welcome to Squadron, \nMay the snail bless upon you`
+        `<@&${wtRoleId}> new member has joined \n${mentionString} Welcome to Squadron, \nMay the snail bless upon you`
       );
     }, 5000); // 5000ms or 5 seconds delay
   }});
