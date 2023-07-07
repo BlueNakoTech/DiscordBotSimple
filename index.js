@@ -98,7 +98,7 @@ client.once(Events.ClientReady, (c) => {
     const jsonString = JSON.parse(jsonData);
 
     const member = guild.members.cache.find(
-      (member) => member.user.tag === jsonString
+      (member) => member.user.username === jsonString
     );
 
     if (!member) {
