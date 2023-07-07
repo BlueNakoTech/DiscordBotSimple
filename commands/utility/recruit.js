@@ -22,7 +22,7 @@ module.exports = {
         .addFields([
           {
             name: `How to Join ?`,
-            value: `click link above and fill the form`,
+            value: `1. Request join squadron via in-game (WAR THUNDER) \n2. click link above and fill the form `,
             inline: true,
           },
           
