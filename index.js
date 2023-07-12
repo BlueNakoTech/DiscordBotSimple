@@ -12,7 +12,8 @@ const {
   wtRoleId,
   channelId,
   clientId,
-
+  chiefId_1,
+  chiefId_2,
   guildId,
   comchannel,
   captainId,
@@ -26,6 +27,7 @@ const firestoreListenerUser = require("./firebase/firestoreListenerUsers");
 const firestoreListener = require("./firebase/firestoreListener");
 const { google } = require("googleapis");
 const admin = require("firebase-admin");
+const { channel } = require("node:diagnostics_channel");
 const db = admin.firestore;
 
 // Create a new client instance
@@ -83,7 +85,7 @@ client.once(Events.ClientReady, (c) => {
     const channel = guild.channels.cache.get(comchannel);
 
     channel.send(
-      `<@${captainId}>-Sensei!!   \nThere is new **Recruit** form for **War Thunder** \nPlease type "**/form**" to view`
+      `<@${captainId}> <@${chiefId_1}> <@${chiefId_2}>  \nThere is new **Recruit** form for **War Thunder** \nPlease type "**/form**" to view`
 
 
     );
@@ -125,7 +127,50 @@ client.once(Events.ClientReady, (c) => {
 });
 
 
+client.on(Events.InteractionCreate, interaction => {
+	if (!interaction.isModalSubmit()) return;
 
+	// Get the data entered by the user
+	const username = interaction.fields.getTextInputValue('usernameInput');
+	const ign = interaction.fields.getTextInputValue('ignInput');
+  const name = interaction.fields.getTextInputValue('panggilanInput');
+  const nation = interaction.fields.getTextInputValue('techtreeInput');
+
+  const embed = new EmbedBuilder()
+            .setColor("#0099ff")
+            .setTitle("New Recruit for Q.E.D")
+            .setThumbnail(
+              logo_url
+            )
+            .addFields(
+              { name: "Discord", value: username},
+              { name: "Nama", value: name },
+
+              {
+                name: "In-game Name",
+                value: ign,
+                inline: true,
+              },
+              
+              { name: "Negara Utama", value: nation }
+            )
+
+            .setFooter({
+              iconURL: interaction.client.user.displayAvatarURL(),
+              text: `${interaction.client.user.username} - Squadron Secretary`,
+            });
+          return embed;
+
+}
+
+);
+
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isModalSubmit()) return;
+	if (interaction.customId === 'FormRequest') {
+		await interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
+	}
+});
 
 // Log in to Discord with your client's token
 client.login(token);
