@@ -52,6 +52,34 @@ module.exports = {
       await deleteFirestoreData(documentId);
       const embed = new EmbedBuilder()
         .setTitle(`Application Approved`)
+        .setColor(0x00ff00)
+
+        .setThumbnail(
+          logo_url
+        )
+        .setTimestamp(Date.now())
+
+        .setFooter({
+          iconURL: interaction.client.user.displayAvatarURL(),
+          text: `${interaction.client.user.username} - Squadron Secretary`,
+        })
+        .addFields([
+
+          {
+            name: `Approved by:`,
+            value: `<@${interaction.user.id}>`,
+            inline: true,
+          },
+          {
+            name: `Discord User:`,
+            value: `${username}`,
+            inline: true,
+          },
+         
+        ]);
+
+        const embed_1 = new EmbedBuilder()
+        .setTitle(`Application Approved`)
         .setDescription(`application for join has been approved`)
         .setColor(0x00ff00)
 
@@ -66,7 +94,7 @@ module.exports = {
         })
         .addFields([
           {
-            name: `Discord Tag:`,
+            name: `Discord user:`,
             value: `${username}`,
             inline: true,
           },
@@ -76,7 +104,7 @@ module.exports = {
             inline: true,
           },
         ]);
-      await ann_channel.send({ embeds: [embed] });
+      await ann_channel.send({ embeds: [embed_1] });
       await interaction.reply({
         embeds: [embed],
       });
