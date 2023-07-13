@@ -6,6 +6,7 @@ const {
   Collection,
   Events,
   EmbedBuilder,
+  
   UserManager,
 } = require("discord.js");
 const {
@@ -18,6 +19,7 @@ const {
   comchannel,
   captainId,
   channelId_ann,
+  logo_url
 } = require("./config.json");
 const {
   assignRole
@@ -127,18 +129,24 @@ client.once(Events.ClientReady, (c) => {
 });
 
 
-client.on(Events.InteractionCreate, interaction => {
-	if (!interaction.isModalSubmit()) return;
 
-	// Get the data entered by the user
-	const username = interaction.fields.getTextInputValue('usernameInput');
+
+
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isModalSubmit()) return;
+  
+	if (interaction.customId === 'FormRequest') {
+  const username = interaction.fields.getTextInputValue('usernameInput');
 	const ign = interaction.fields.getTextInputValue('ignInput');
   const name = interaction.fields.getTextInputValue('panggilanInput');
-  const nation = interaction.fields.getTextInputValue('techtreeInput');
+  const nation = interaction.fields.getTextInputValue('techTreeInput');
+  const guild = client.guilds.cache.get(guildId);
+  const channel = guild.channels.cache.get(channelId_ann);
 
   const embed = new EmbedBuilder()
             .setColor("#0099ff")
             .setTitle("New Recruit for Q.E.D")
+            .setDescription("Apply via Discord Form (TEST)")
             .setThumbnail(
               logo_url
             )
@@ -159,17 +167,24 @@ client.on(Events.InteractionCreate, interaction => {
               iconURL: interaction.client.user.displayAvatarURL(),
               text: `${interaction.client.user.username} - Squadron Secretary`,
             });
-          return embed;
-
-}
-
-);
-
-client.on(Events.InteractionCreate, async interaction => {
-	if (!interaction.isModalSubmit()) return;
-	if (interaction.customId === 'FormRequest') {
+   
+    await channel.send({ embeds: [embed] });
+       
 		await interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
 	}
+});
+
+
+client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isButton()) return;
+
+  if (interaction.customId === 'sendCommand') {
+    // Perform the desired action when the "Send Command" button is clicked
+    await interaction.reply({content: 'To Join Squadron type command **/request** to show apply form', ephemeral: true});
+    // You can add your own logic here to send the desired slash command to the channel
+    // For example:
+   
+  }
 });
 
 // Log in to Discord with your client's token

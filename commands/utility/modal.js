@@ -10,7 +10,9 @@ module.exports = {
 	async execute(interaction) {
 		const modal = new ModalBuilder()
 			.setCustomId('FormRequest')
+	
 			.setTitle('Formulir Request Join ');
+			
 
 		// Add components to modal
 
