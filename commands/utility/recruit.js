@@ -37,7 +37,7 @@ module.exports = {
         },
         {
           name: 'How to Join ?',
-          value: '1. Request join squadron via in-game (WAR THUNDER)\n2. Click the either button below and fill the form',
+          value: '1. Request join squadron via in-game (WAR THUNDER)\n2. Click the either button below and fill the form  \n(**NOTE:** click **via Website Form** if Noa(Bot) in not respond)',
           inline: true,
         },
       ]);

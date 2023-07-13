@@ -141,7 +141,7 @@ client.on(Events.InteractionCreate, async interaction => {
   const name = interaction.fields.getTextInputValue('panggilanInput');
   const nation = interaction.fields.getTextInputValue('techTreeInput');
   const guild = client.guilds.cache.get(guildId);
-  const channel = guild.channels.cache.get(channelId_ann);
+  const channel = guild.channels.cache.get(comchannel);
 
   const embed = new EmbedBuilder()
             .setColor("#0099ff")
@@ -180,7 +180,7 @@ client.on('interactionCreate', async (interaction) => {
 
   if (interaction.customId === 'sendCommand') {
     // Perform the desired action when the "Send Command" button is clicked
-    await interaction.reply({content: 'To Join Squadron type command **/request** to show apply form', ephemeral: true});
+    await interaction.reply({content: 'To Join Squadron type command **/request** to show apply form \n if Noa(**Bot**) is not respond, Try **via website Form**', ephemeral: true});
     // You can add your own logic here to send the desired slash command to the channel
     // For example:
    
