@@ -6,17 +6,20 @@ const {
   Collection,
   Events,
   EmbedBuilder,
+  
   UserManager,
 } = require("discord.js");
 const {
   wtRoleId,
   channelId,
   clientId,
-
+  chiefId_1,
+  chiefId_2,
   guildId,
   comchannel,
   captainId,
   channelId_ann,
+  logo_url
 } = require("./config.json");
 const {
   assignRole
@@ -26,6 +29,7 @@ const firestoreListenerUser = require("./firebase/firestoreListenerUsers");
 const firestoreListener = require("./firebase/firestoreListener");
 const { google } = require("googleapis");
 const admin = require("firebase-admin");
+const { channel } = require("node:diagnostics_channel");
 const db = admin.firestore;
 
 // Create a new client instance
@@ -83,7 +87,7 @@ client.once(Events.ClientReady, (c) => {
     const channel = guild.channels.cache.get(comchannel);
 
     channel.send(
-      `<@${captainId}>-Sensei!!   \nThere is new **Recruit** form for **War Thunder** \nPlease type "**/form**" to view`
+      `<@${captainId}> <@${chiefId_1}> <@${chiefId_2}>  \nThere is new **Recruit** form for **War Thunder** \nPlease type "**/form**" to view`
 
 
     );
@@ -126,6 +130,62 @@ client.once(Events.ClientReady, (c) => {
 
 
 
+
+
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isModalSubmit()) return;
+  
+	if (interaction.customId === 'FormRequest') {
+  const username = interaction.fields.getTextInputValue('usernameInput');
+	const ign = interaction.fields.getTextInputValue('ignInput');
+  const name = interaction.fields.getTextInputValue('panggilanInput');
+  const nation = interaction.fields.getTextInputValue('techTreeInput');
+  const guild = client.guilds.cache.get(guildId);
+  const channel = guild.channels.cache.get(comchannel);
+
+  const embed = new EmbedBuilder()
+            .setColor("#0099ff")
+            .setTitle("New Recruit for Q.E.D")
+            .setDescription("Apply via Discord Form (TEST)")
+            .setThumbnail(
+              logo_url
+            )
+            .addFields(
+              { name: "Discord", value: username},
+              { name: "Nama", value: name },
+
+              {
+                name: "In-game Name",
+                value: ign,
+                inline: true,
+              },
+              
+              { name: "Negara Utama", value: nation }
+            )
+
+            .setFooter({
+              iconURL: interaction.client.user.displayAvatarURL(),
+              text: `${interaction.client.user.username} - Squadron Secretary`,
+            });
+   
+    await channel.send({ embeds: [embed] });
+       
+		await interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
+	}
+});
+
+
+client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isButton()) return;
+
+  if (interaction.customId === 'sendCommand') {
+    // Perform the desired action when the "Send Command" button is clicked
+    await interaction.reply({content: 'To Join Squadron type command **/request** to show apply form \n if Noa(**Bot**) is not respond, Try **via website Form**', ephemeral: true});
+    // You can add your own logic here to send the desired slash command to the channel
+    // For example:
+   
+  }
+});
 
 // Log in to Discord with your client's token
 client.login(token);
