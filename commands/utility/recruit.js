@@ -27,7 +27,7 @@ module.exports = {
       .setTimestamp(Date.now())
       .setFooter({
         iconURL: interaction.user.displayAvatarURL(),
-        text: interaction.user.tag,
+        text: interaction.user.username,
       })
       .addFields([
 
