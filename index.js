@@ -27,6 +27,7 @@ const {
 const { token } = require("./tokenId.json");
 const firestoreListenerUser = require("./firebase/firestoreListenerUsers");
 const firestoreListener = require("./firebase/firestoreListener");
+const firestoreObserver = require("./firebase/firestoreObserver");
 const { google } = require("googleapis");
 const admin = require("firebase-admin");
 const { channel } = require("node:diagnostics_channel");
@@ -169,7 +170,7 @@ client.on(Events.InteractionCreate, async interaction => {
             });
    
     await channel.send({ embeds: [embed] });
-       
+    await firestoreObserver.writeSubmittedData(name, username, ign, nation);
 		await interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
 	}
 });

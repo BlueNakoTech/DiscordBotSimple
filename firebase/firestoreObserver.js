@@ -50,6 +50,21 @@ async  getDocFieldData(documentId) {
     }
   },
 
+  
+  async writeSubmittedData(name, username, ign, nation){
+    const dataForm = {
+      Discord: `${username}`,
+      Nama: `${name}`,
+      Negara: `${nation}`,
+      nickname: `${ign}`
+    }
+    try {
+      db.collection('Formulir').doc().set(dataForm)
+    } catch (error) {
+      console.error('Error writing to Firestore:', error);
+    }
+  },
+
   async moveDocument(documentId, sourceCollectionName, targetCollectionName) {
     // Get a reference to the source document
     const sourceRef = db.collection(sourceCollectionName).doc(documentId);
