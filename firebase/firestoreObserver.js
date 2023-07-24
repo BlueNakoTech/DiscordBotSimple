@@ -81,7 +81,20 @@ async  getDocFieldData(documentId) {
     // Delete the source document
   },
 
- 
+  async getFirestoreDataSecond() {
+    const collectionRef = db.collection("approved");
+    
+    const querySnapshot = await collectionRef.get();
+    const values = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      data.id = doc.id; // Add the document ID to the data object
+      return data;
+    });
+    const jsonFile = JSON.stringify(values);
+    const jsonString = JSON.parse(jsonFile);
+    console.log(jsonFile);
+    return jsonString;
+  },
   
   
   
