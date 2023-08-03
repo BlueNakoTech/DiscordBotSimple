@@ -1,9 +1,9 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const { getFirestoreData } = require("../../firebase/firestoreObserver");
+const { getFirestoreDataSecond } = require("../../firebase/firestoreObserver");
 const { captainId, chiefId_1, chiefId_2, logo_url, threadId } = require("../../config.json");
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("form").setDescription("View"),
+  data: new SlashCommandBuilder().setName("approved-form").setDescription("View"),
   async execute(interaction) {
     const allowedUserIds = [captainId, chiefId_1, chiefId_2];
     if (!allowedUserIds.includes(interaction.user.id)) {
@@ -20,7 +20,7 @@ module.exports = {
 
 
     try {
-      const data = await getFirestoreData();
+      const data = await getFirestoreDataSecond();
       if (data.length === 0) {
         await interaction.reply({
           content: "Tidak ada Data",
@@ -53,8 +53,11 @@ module.exports = {
             });
           return embed;
         });
-        await threadChannel.send({ embeds });
-        await interaction.reply({ embeds });
+        for (const embed of embeds) {
+            await threadChannel.send({ embeds: [embed] })
+        }
+        await interaction.reply( {content:`Succesfully retrieve form`,
+        ephemeral: true});
       }
     } catch (error) {
       console.error(error);
