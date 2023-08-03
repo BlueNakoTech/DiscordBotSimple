@@ -5,6 +5,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('announce')
     .setDescription('Create an announcement')
+    .addUserOption(option => option.setName('target').setDescription('user to tag'))
     .addStringOption(option =>
       option
         .setName('content')
@@ -26,6 +27,12 @@ module.exports = {
         ephemeral: true,
       });
     }
+
+    const member = interaction.options.getMember('target');
+    if (!member) {
+      member = `<@&${wtRoleId}>`;
+    }
+
     let time = interaction.options.getString('time');
 
     // Check if the 'time' option was not provided or empty
@@ -41,7 +48,7 @@ module.exports = {
       // Use the template announcement
       description =
         `Assalamualaikum warahmatullahi wabarakatuh , Salam sejahtera bagi kita semua , Shalom , Om Swastyastu , Namo Buddhaya , dan Salam Kebajikan\n` +
-        `diberitahukan kepada seluruh anggota squadron QED, agar diharapkan hadir pada malam hari ini pukul ${time} WIB dalam rangka melaksanakan "Squadron Realistic Battle/SRB".\n` +
+        `diberitahukan kepada seluruh anggota squadron QED, agar diharapkan hadir pada malam hari ini pukul ${time} WIB dalam rangka melaksanakan "**Squadron Realistic Battle/SRB**".\n` +
         `sekian dan terimakasih`;
     }
 
@@ -59,7 +66,7 @@ module.exports = {
         },
         {
           name: 'To:',
-          value: `<@&${wtRoleId}>`,
+          value: `${member}`,
           inline: true,
         },
       ])
@@ -68,7 +75,7 @@ module.exports = {
         text: `${interaction.client.user.username}`,
       });
     
-    setTimeout(()=> {channel.send(`<@&${wtRoleId}>`)} ,2000);
+    setTimeout(()=> {channel.send(`${member}`)} ,2000);
     await interaction.reply({ embeds: [embed] });
   },
 };

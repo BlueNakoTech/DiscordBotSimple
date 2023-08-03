@@ -1,11 +1,12 @@
 const { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder, EmbedBuilder, ButtonStyle } = require('discord.js');
-const { logo_url } = require('../../config.json');
+const { logo_url, requestChannel } = require('../../config.json');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('recruit')
     .setDescription('Set recruitment link'),
   async execute(interaction) {
+    const channel = interaction.client.channels.cache.get(requestChannel);
     const joinSquadronButton = new ButtonBuilder()
       .setStyle(ButtonStyle.Link)
       .setLabel('via Website Form')
@@ -21,7 +22,7 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setTitle('War Thunder Squadron')
-      .setDescription('Join our squadron at War Thunder')
+      .setDescription('Gabung Squadron Kami')
       .setColor(0x18e1ee)
       .setThumbnail(logo_url)
       .setTimestamp(Date.now())
@@ -33,15 +34,18 @@ module.exports = {
 
         {
           name: 'Squadron Rules',
-          value: `1. Have enough Sanity \n2. Server Rules Apply`
+          value: `1. Waras \n2. Patuhi peraturan server`
         },
         {
-          name: 'How to Join ?',
-          value: '1. Request join squadron via in-game (WAR THUNDER)\n2. Click the either button below and fill the form  \n(**NOTE:** click **via Website Form** if Noa(Bot) in not respond)',
+          name: 'Bagaimana Cara Join?',
+          value: '1. Request join squadron via in-game (WAR THUNDER)\n2. Tekan Tombol Mana Saja dan Isi Formulirnya  \n(**NOTE:** click **via Website Form** jika Noa(Bot) tidak merespon)',
           inline: true,
         },
       ]);
-
+      setTimeout(()=> {channel.send({
+        embeds: [embed],
+        components: [row],
+      })} ,1000);
     await interaction.reply({
       embeds: [embed],
       components: [row],
