@@ -9,9 +9,9 @@
   "author": "Detrama",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^14.11.0",
+    "discord.js": "^14.12.1",
     "discord.js-commando": "^0.12.3",
-    "firebase-admin": "^10.0.2",
+    "firebase-admin": "^11.10.1",
     "googleapis": "^118.0.0",
     "node.js": "^0.0.1-security"
   },
