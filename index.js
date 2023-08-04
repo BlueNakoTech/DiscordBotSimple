@@ -1,13 +1,14 @@
 // Require the necessary discord.js classes
 const fs = require("node:fs");
 const path = require("node:path");
+const buttonHandler = require(`./interaction/buttonInteraction`);
 const {
   Client,
   Collection,
   Events,
   EmbedBuilder,
   
-  UserManager,
+
 } = require("discord.js");
 const {
   wtRoleId,
@@ -175,18 +176,8 @@ client.on(Events.InteractionCreate, async interaction => {
 	}
 });
 
+client.on('interactionCreate', buttonHandler);
 
-client.on('interactionCreate', async (interaction) => {
-  if (!interaction.isButton()) return;
-
-  if (interaction.customId === 'sendCommand') {
-    // Perform the desired action when the "Send Command" button is clicked
-    await interaction.reply({content: 'To Join Squadron type command **/request** to show apply form \n if Noa(**Bot**) is not respond, Try **via website Form**', ephemeral: true});
-    // You can add your own logic here to send the desired slash command to the channel
-    // For example:
-   
-  }
-});
 
 // Log in to Discord with your client's token
 client.login(token);
