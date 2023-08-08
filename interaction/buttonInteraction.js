@@ -1,11 +1,15 @@
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle} = require('discord.js');
 
 module.exports = async (interaction) => {
-  if (!interaction.isButton()) return;
+  if (!interaction.isStringSelectMenu()) return;
 
-  if (interaction.customId === 'sendCommand') {
-    // Perform the desired action when the "Send Command" button is clicked
-    const modal = new ModalBuilder()
+  if (interaction.customId === 'web') {
+
+
+
+
+    
+      const modal = new ModalBuilder()
       .setCustomId('FormRequest')
       .setTitle('Formulir Request Join');
 
@@ -42,6 +46,9 @@ module.exports = async (interaction) => {
 
     await interaction.showModal(modal);
     // Show the modal to the user
+    } 
+    // Perform the desired action when the "Send Command" button is clicked
+   
     
-  }
+  
 };

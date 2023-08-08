@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder, EmbedBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder, EmbedBuilder, ButtonStyle, StringSelectMenuBuilder,StringSelectMenuOptionBuilder } = require('discord.js');
 const { logo_url, requestChannel } = require('../../config.json');
 
 module.exports = {
@@ -7,6 +7,23 @@ module.exports = {
     .setDescription('Set recruitment link'),
   async execute(interaction) {
     const channel = interaction.client.channels.cache.get(requestChannel);
+
+    const select = new StringSelectMenuBuilder()
+			.setCustomId('starter')
+			.setPlaceholder('Form Selection')
+			.addOptions(
+				new StringSelectMenuOptionBuilder()
+					.setLabel('Via Web Form')
+          .setCustomId("web")
+					.setDescription('Web Form for Request Join Squadron')
+					.setValue('web'),
+				new StringSelectMenuOptionBuilder()
+					.setLabel('Discord')
+					.setDescription('Show Discord Form for Request Join Squadron')
+					.setValue('discord'),
+				
+			);
+
     const joinSquadronButton = new ButtonBuilder()
       .setStyle(ButtonStyle.Link)
       .setLabel('via Website Form')
@@ -18,7 +35,7 @@ module.exports = {
       .setCustomId('sendCommand');
 
     const row = new ActionRowBuilder()
-      .addComponents(joinSquadronButton, sendCommandButton);
+      .addComponents(select);
 
     const embed = new EmbedBuilder()
       .setTitle('War Thunder Squadron')

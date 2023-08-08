@@ -2,6 +2,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const buttonHandler = require(`./interaction/buttonInteraction`);
+
 const {
   Client,
   Collection,
@@ -177,6 +178,8 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.on('interactionCreate', buttonHandler);
+
+client.on('voiceStateUpdate', (...args) => voiceChannel.execute(...args, client));
 
 
 // Log in to Discord with your client's token
