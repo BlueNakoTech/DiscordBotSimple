@@ -5,7 +5,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('announce')
     .setDescription('Create an announcement')
-    .addUserOption(option => option.setName('target').setDescription('user to tag'))
+    
     .addStringOption(option =>
       option
         .setName('content')
@@ -28,10 +28,7 @@ module.exports = {
       });
     }
 
-    const member = interaction.options.getMember('target');
-    if (!member) {
-      member = `<@&${wtRoleId}>`;
-    }
+    
 
     let time = interaction.options.getString('time');
 
@@ -66,7 +63,7 @@ module.exports = {
         },
         {
           name: 'To:',
-          value: `${member}`,
+          value: `<@&${wtRoleId}>`,
           inline: true,
         },
       ])
@@ -75,7 +72,7 @@ module.exports = {
         text: `${interaction.client.user.username}`,
       });
     
-    setTimeout(()=> {channel.send(`${member}`)} ,2000);
+    setTimeout(()=> {channel.send(`<@&${wtRoleId}>`)} ,2000);
     await interaction.reply({ embeds: [embed] });
   },
 };
