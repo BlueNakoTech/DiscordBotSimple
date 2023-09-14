@@ -1,14 +1,13 @@
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle} = require('discord.js');
 
 module.exports = async (interaction) => {
-  if (!interaction.isButton()) return;
+  if (!interaction.isStringSelectMenu()) return;
 
-  if (interaction.customId === 'sauce'){
-    
-  }
+  if (interaction.customId === 'starter') {
 
-  if (interaction.customId === 'sendCommand') {
-    // Perform the desired action when the "Send Command" button is clicked
+    const selected = interaction.values[0];
+
+
     const modal = new ModalBuilder()
       .setCustomId('FormRequest')
       .setTitle('Formulir Request Join');
@@ -18,6 +17,7 @@ module.exports = async (interaction) => {
       .setCustomId('usernameInput')
       .setLabel("Discord Username")
       .setStyle(TextInputStyle.Short);
+      
 
     const inGameNameInput = new TextInputBuilder()
       .setCustomId('ignInput')
@@ -44,8 +44,16 @@ module.exports = async (interaction) => {
     // Add inputs to the modal
     modal.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow);
 
+    if(selected === "discord"){
     await interaction.showModal(modal);
     // Show the modal to the user
+    }else if(selected === "web"){
     
-  }
+    }
+
+    } 
+    // Perform the desired action when the "Send Command" button is clicked
+   
+    
+  
 };

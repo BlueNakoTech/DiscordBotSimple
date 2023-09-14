@@ -53,7 +53,7 @@ module.exports = {
             });
           return embed;
         });
-        await threadChannel.send({ embeds });
+        // await threadChannel.send({ embeds });
         await interaction.reply({ embeds });
       }
     } catch (error) {

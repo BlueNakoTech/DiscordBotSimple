@@ -2,6 +2,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const buttonHandler = require(`./interaction/buttonInteraction`);
+const fetch = require('node-fetch');
 const {
   Client,
   Collection,
@@ -175,6 +176,44 @@ client.on(Events.InteractionCreate, async interaction => {
 		await interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
 	}
 });
+
+fetch.defaults = {
+  ...fetch.defaults,
+  follow: 1000, // Change this to your desired maximum number of redirects
+};
+
+// client.on('interactionCreate', async (interaction) => {
+//   if (!interaction.isCommand()) return;
+
+//   const { commandName } = interaction;
+
+//   if (commandName === 'url') {
+//     const urlString = interaction.options.getString('source');
+//     const imageUrl = urlString; // Use the provided URL as the image URL
+//     const formattedUrlString = `\`${urlString}\``
+//     try {
+//       // Fetch the image
+//       const response = await fetch(imageUrl);
+//       if (!response.ok) {
+//         throw new Error('Failed to fetch image');
+//       }
+
+//       // Read the image as a buffer
+//       const imageBuffer = await response.buffer();
+      
+//       // Send the image as an attachment
+//       await interaction.editReply({
+//         files: [{
+//           attachment: imageBuffer,
+//           name: 'image.jpg', // You can change the filename if needed
+//         }],
+//       });
+//     } catch (error) {
+//       console.error(error);
+//       await interaction.editReply(formattedUrlString);
+//     }
+//   }
+// });
 
 client.on('interactionCreate', buttonHandler);
 
