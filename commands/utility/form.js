@@ -1,6 +1,8 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder,ButtonBuilder, ActionRowBuilder, EmbedBuilder, ButtonStyle,StringSelectMenuBuilder,StringSelectMenuOptionBuilder} = require("discord.js");
 const { getFirestoreData } = require("../../firebase/firestoreObserver");
-const { captainId, chiefId_1, chiefId_2, logo_url, threadId } = require("../../config.json");
+
+
+const { captainId, chiefId_1, chiefId_2, logo_url, threadId ,channelId_ann} = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder().setName("form").setDescription("View"),
@@ -15,10 +17,36 @@ module.exports = {
       });
       
     }
-    
+    if (interaction.customId === 'approved'){
+
+    }
     const threadChannel = await interaction.guild.channels.fetch(threadId);
+    const data = await getFirestoreData();
+    const approveButton = new ButtonBuilder()
+      .setStyle(ButtonStyle.Success)
+      .setLabel('Approve')
+      .setCustomId('approved');
+    
+    const rejectButton = new ButtonBuilder()
+      .setStyle(ButtonStyle.Danger)
+      .setLabel('Reject')
+      .setCustomId('rejected');
 
+      const options = data.map((doc) => {
+        const option = new StringSelectMenuOptionBuilder()
+          .setLabel(doc.Nama.toString()) // Set the label
+          .setDescription(doc.id) // Set the description (if needed)
+          .setValue(doc.id.toString()); // Set the value
+      
+        return option;
+      });
 
+    const select = new StringSelectMenuBuilder()
+      .setCustomId('regid')
+      .setPlaceholder('Nama')
+      .addOptions( 
+        options
+      )
     try {
       const data = await getFirestoreData();
       if (data.length === 0) {
@@ -27,6 +55,7 @@ module.exports = {
           ephemeral: true,
         });
       } else {
+       
         const embeds = data.map((doc) => {
           const embed = new EmbedBuilder()
             .setColor("#0099ff")
@@ -53,8 +82,11 @@ module.exports = {
             });
           return embed;
         });
-        // await threadChannel.send({ embeds });
+
+       
+        // await threadChannel.send({ mbeds });
         await interaction.reply({ embeds });
+        
       }
     } catch (error) {
       console.error(error);
@@ -64,5 +96,13 @@ module.exports = {
         ephemeral: true,
       });
     }
+    const row1 = new ActionRowBuilder()
+    .addComponents( select);
+    const row2 = new ActionRowBuilder()
+    .addComponents(  approveButton, rejectButton);
+   
+    await interaction.followUp({
+      content: '**[WIP]** - Not yet Functional',
+      components : [row1,row2]});
   },
 };

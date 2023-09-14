@@ -3,9 +3,13 @@ const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle} = requ
 module.exports = async (interaction) => {
   if (!interaction.isStringSelectMenu()) return;
 
+  if (interaction.customId === 'regid') {
+    const selected = interaction.values[0]
+  }
+
   if (interaction.customId === 'starter') {
 
-    const selected = interaction.values[0];
+    
 
 
     const modal = new ModalBuilder()

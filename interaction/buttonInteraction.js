@@ -3,10 +3,6 @@ const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle} = requ
 module.exports = async (interaction) => {
   if (!interaction.isButton()) return;
 
-  if (interaction.customId === 'sauce'){
-    
-  }
-
   if (interaction.customId === 'sendCommand') {
     // Perform the desired action when the "Send Command" button is clicked
     const modal = new ModalBuilder()
