@@ -1,6 +1,10 @@
 const admin = require('firebase-admin');
+const serviceAccount = require('./firebase.json');
 
 
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 const db = admin.firestore();
 
@@ -36,6 +40,18 @@ async  getDocFieldData(documentId) {
   
   console.log(fieldData);
   return jsonFile;
+},
+
+async  getFieldData(documentId) {
+  const Id = `${documentId}`;
+  const documentRef = db.collection('Formulir').doc(Id);
+  const documentData = await documentRef.get();
+  const fieldData = documentData.data();
+  const jsonFile = JSON.stringify(fieldData);
+  const JsonString = JSON.parse(jsonFile);
+  
+  console.log(jsonFile);
+  return JsonString;
 },
 
 

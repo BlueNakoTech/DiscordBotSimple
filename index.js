@@ -2,12 +2,16 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const buttonHandler = require(`./interaction/buttonInteraction`);
+const selectHandler = require(`./interaction/selectMenuInteraction`);
 const fetch = require('node-fetch');
 const {
   Client,
   Collection,
   Events,
   EmbedBuilder,
+  ButtonBuilder,
+  ActionRowBuilder, 
+  ButtonStyle
   
 
 } = require("discord.js");
@@ -88,19 +92,25 @@ client.once(Events.ClientReady, (c) => {
 
     const guild = client.guilds.cache.get(guildId);
     const channel = guild.channels.cache.get(comchannel);
-
-    channel.send(
-      `<@${captainId}> <@${chiefId_1}> <@${chiefId_2}>  \nThere is new **Recruit** form for **War Thunder** \nPlease type "**/form**" to view`
-
-
-    );
+    const viewButton = new ButtonBuilder()
+      .setStyle(ButtonStyle.Primary)
+      .setLabel('View Form')
+      .setCustomId('viewForm');
+    
+    const row = new ActionRowBuilder()
+    .addComponents(viewButton);
+    channel.send({
+      content : `<@${captainId}> <@${chiefId_1}> <@${chiefId_2}> \nThere is new **Recruit** form for **War Thunder** \nClick button below to view`,
+      components : [row]
+    });
+    
   });
 
   firestoreListenerUser.on("newUsers", async (dataString) => {
 
     const guild = client.guilds.cache.get(guildId);
     const channel = guild.channels.cache.get(channelId_ann);
-    const channel_2 = guild.channels.cache.get(comchannel);
+    const channel_2 = guild.channels.cache.get('1098293055855018044');
     const jsonData = dataString.discord;
     const jsonString = JSON.parse(jsonData);
 
@@ -144,7 +154,7 @@ client.on(Events.InteractionCreate, async interaction => {
   const name = interaction.fields.getTextInputValue('panggilanInput');
   const nation = interaction.fields.getTextInputValue('techTreeInput');
   const guild = client.guilds.cache.get(guildId);
-  const channel = guild.channels.cache.get(comchannel);
+  const channel = guild.channels.cache.get('1098293055855018044');
 
   const embed = new EmbedBuilder()
             .setColor("#0099ff")
@@ -216,6 +226,7 @@ fetch.defaults = {
 // });
 
 client.on('interactionCreate', buttonHandler);
+client.on('interactionCreate', selectHandler);
 
 
 // Log in to Discord with your client's token
