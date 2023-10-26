@@ -1,20 +1,22 @@
 const { ModalBuilder, ButtonBuilder, ButtonStyle, TextInputBuilder, ActionRowBuilder, TextInputStyle, EmbedBuilder, StringSelectMenuOptionBuilder,StringSelectMenuBuilder} = require('discord.js');
-const { captainId, chiefId_1, chiefId_2, logo_url, threadId ,channelId_ann} = require("../config.json");
+const { captainId, chiefId_1, chiefId_2, logo_url, adminId} = require("../config.json");
 const { getFirestoreData } = require("../firebase/firestoreObserver");
 module.exports = async (interaction) => {
-  if (!interaction.isButton()) return;
+  // if (!interaction.isButton()) return;
 
   if (interaction.customId === 'viewForm'){
     const allowedUserIds = [captainId, chiefId_1, chiefId_2];
-  
-    if (!allowedUserIds.includes(interaction.user.id)) {
+    const allowedRoleIds = [adminId];
+    if (!allowedUserIds.includes(interaction.user.id) &&
+    !interaction.member.roles.cache.some((role) => allowedRoleIds.includes(role.id))) {
       console.log('Unrestricted Command');
       return await interaction.reply({
         content: "Maaf, anda tidak diperpolehkan menggunakan perintah ini",
         ephemeral: true, // Only the user who triggered the command can see this response
         
       });
-  }
+      
+    }
   try{
   const data = await getFirestoreData();
   if (data.length === 0) {
@@ -29,8 +31,8 @@ module.exports = async (interaction) => {
     // Format the data and add it to the embed fields
     data.map((document) => {
       const name = document.Nama.toString();
-      const regId = document.id // Replace 'name' with your actual field name
-      embedFields.push({ name: name, value: `\`Reg ID : ${regId}\``, inline:false });
+      const discord = document.Discord.toString(); // Replace 'name' with your actual field name
+      embedFields.push({ name: name, value: `\`Discord: ${discord}\``, inline:false });
     });
     const options = data.map((doc) => {
       const option = new StringSelectMenuOptionBuilder()
@@ -52,6 +54,11 @@ module.exports = async (interaction) => {
       .setThumbnail(
         logo_url
       )
+      .setFooter({
+        iconURL: interaction.client.user.displayAvatarURL(),
+        text: `Please Confirm For In-Game Application before choosing the Form - Squadron Secretary`,
+      })
+      
       .addFields(embedFields)
   
       const row = new ActionRowBuilder().addComponents(select);
@@ -60,6 +67,9 @@ module.exports = async (interaction) => {
         embeds: [embed],
         components: [row],
       });
+
+      
+      
   }
 } catch (error) {
   console.error(error);
@@ -83,6 +93,7 @@ module.exports = async (interaction) => {
     const usernameInput = new TextInputBuilder()
       .setCustomId('usernameInput')
       .setLabel("Discord Username")
+      .setPlaceholder("USERNAME (not server nickname)")
       .setStyle(TextInputStyle.Short);
 
     const inGameNameInput = new TextInputBuilder()

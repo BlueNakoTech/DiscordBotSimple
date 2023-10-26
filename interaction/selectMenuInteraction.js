@@ -1,11 +1,22 @@
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, EmbedBuilder, ButtonBuilder, ButtonStyle} = require('discord.js');
-const { captainId, chiefId_1, chiefId_2, logo_url, threadId ,channelId_ann} = require("../config.json");
+const { captainId, chiefId_1, chiefId_2, logo_url, adminId, threadId ,channelId_ann} = require("../config.json");
 const { getFieldData, deleteFirestoreData, getDocFieldData, writeData, moveDocument} = require("../firebase/firestoreObserver");
 module.exports = async (interaction) => {
   if (!interaction.isStringSelectMenu()) return;
 
   if (interaction.customId === 'regid') {
-    
+    const allowedUserIds = [captainId, chiefId_1, chiefId_2];
+    const allowedRoleIds = [adminId];
+    if (!allowedUserIds.includes(interaction.user.id) &&
+    !interaction.member.roles.cache.some((role) => allowedRoleIds.includes(role.id))) {
+      console.log('Unrestricted Command');
+      return await interaction.reply({
+        content: "Maaf, anda tidak diperpolehkan menggunakan perintah ini",
+        ephemeral: true, // Only the user who triggered the command can see this response
+        
+      });
+      
+    }
     try {
       // Handle the selection here and prepare the content for the second embed with buttons
       var selectedValue = interaction.values[0];
@@ -59,12 +70,27 @@ module.exports = async (interaction) => {
         components: [row2],
       });
 
+      const allowedUserIds = [captainId, chiefId_1, chiefId_2];
+      const allowedRoleIds = [adminId];
+      const filter = async (i) => {
+        if (['approved', 'rejected'].includes(i.customId) && i.user.id === interaction.user.id) {
+          return true; // Interaction is valid
+        } else {
+          // Handle the error here
+          console.log(`Invalid interaction from user ${i.user.username} with custom ID ${i.customId}`);
+          return false;
+        }
+      };
+      const collected= interaction.channel.createMessageComponentCollector({ filter, time: 120000 });
+    
+
+
+    
+
+      collected.on('collect', async (buttonInteraction) => {
+        const allowedUserIds = [captainId, chiefId_1, chiefId_2];
+        const allowedRoleIds = [adminId];
      
-      const filter = (i) => ['approved', 'rejected'].includes(i.customId) && i.user.id === interaction.user.id;
-      const collector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 });
-
-
-      collector.on('collect', async (buttonInteraction) => {
       
       if (buttonInteraction.customId === 'approved') {
       const discordId = await getDocFieldData(selectedValue);
