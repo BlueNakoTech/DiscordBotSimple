@@ -1,11 +1,11 @@
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, EmbedBuilder, ButtonBuilder, ButtonStyle} = require('discord.js');
-const { captainId, chiefId_1, chiefId_2, logo_url, adminId, threadId ,channelId_ann} = require("../config.json");
+const { captainId, chiefId_1, chiefId_2, chiefId_3, logo_url, adminId, threadId ,channelId_ann} = require("../config.json");
 const { getFieldData, deleteFirestoreData, getDocFieldData, writeData, moveDocument} = require("../firebase/firestoreObserver");
 module.exports = async (interaction) => {
   if (!interaction.isStringSelectMenu()) return;
 
   if (interaction.customId === 'regid') {
-    const allowedUserIds = [captainId, chiefId_1, chiefId_2];
+    const allowedUserIds = [captainId, chiefId_1, chiefId_2, chiefId_3];
     const allowedRoleIds = [adminId];
     if (!allowedUserIds.includes(interaction.user.id) &&
     !interaction.member.roles.cache.some((role) => allowedRoleIds.includes(role.id))) {

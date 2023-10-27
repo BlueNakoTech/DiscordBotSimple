@@ -2,12 +2,12 @@ const { SlashCommandBuilder,ButtonBuilder, ActionRowBuilder, EmbedBuilder, Butto
 const { getFirestoreData } = require("../../firebase/firestoreObserver");
 
 
-const { captainId, chiefId_1, chiefId_2, adminId, logo_url, threadId ,channelId_ann} = require("../../config.json");
+const { captainId, chiefId_1, chiefId_2, chiefId_3, adminId, logo_url, threadId ,channelId_ann} = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder().setName("form").setDescription("View"),
   async execute(interaction) {
-    const allowedUserIds = [captainId, chiefId_1, chiefId_2];
+    const allowedUserIds = [captainId, chiefId_1, chiefId_2, chiefId_3];
     const allowedRoleIds = [adminId];
     if (!allowedUserIds.includes(interaction.user.id) &&
     !interaction.member.roles.cache.some((role) => allowedRoleIds.includes(role.id))) {
