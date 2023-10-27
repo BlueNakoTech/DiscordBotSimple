@@ -16,12 +16,15 @@ const {
 
 } = require("discord.js");
 const {
+  devchannel,
   wtRoleId,
   channelId,
   clientId,
   chiefId_1,
   chiefId_2,
+  adminId,
   guildId,
+  kantorId,
   comchannel,
   captainId,
   channelId_ann,
@@ -91,12 +94,12 @@ client.once(Events.ClientReady, (c) => {
     console.log(`New Form added`);
 
     const guild = client.guilds.cache.get(guildId);
-    const channel = guild.channels.cache.get(comchannel);
+    const channel = guild.channels.cache.get(kantorId);
     const viewButton = new ButtonBuilder()
       .setStyle(ButtonStyle.Primary)
       .setLabel('View Form')
       .setCustomId('viewForm');
-    
+       
     const row = new ActionRowBuilder()
     .addComponents(viewButton);
     channel.send({
@@ -133,9 +136,9 @@ client.once(Events.ClientReady, (c) => {
     assignRole(member);
 
     setTimeout(() => {
-      channel.send(
-        `<@&${wtRoleId}> new member has joined \n${mentionString} Welcome to Squadron, \nMay the snail bless upon you`
-      );
+    channel.send(
+    `<@&${wtRoleId}> new member has joined \n${mentionString} Welcome to Squadron, \nMay the snail bless upon you`
+    );
     }, 5000); // 5000ms or 5 seconds delay
   }});
 
@@ -149,12 +152,13 @@ client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isModalSubmit()) return;
   
 	if (interaction.customId === 'FormRequest') {
-  const username = interaction.fields.getTextInputValue('usernameInput');
+  const username = interaction.fields.getTextInputValue('usernameInput').toLowerCase();
 	const ign = interaction.fields.getTextInputValue('ignInput');
   const name = interaction.fields.getTextInputValue('panggilanInput');
   const nation = interaction.fields.getTextInputValue('techTreeInput');
   const guild = client.guilds.cache.get(guildId);
   const channel = guild.channels.cache.get('1098293055855018044');
+  const threadChannel = await interaction.guild.channels.fetch(kantorId);
 
   const embed = new EmbedBuilder()
             .setColor("#0099ff")
@@ -181,7 +185,7 @@ client.on(Events.InteractionCreate, async interaction => {
               text: `${interaction.client.user.username} - Squadron Secretary`,
             });
    
-    await channel.send({ embeds: [embed] });
+    // await channel.send({ embeds: [embed] });
     await firestoreObserver.writeSubmittedData(name, username, ign, nation);
 		await interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
 	}
