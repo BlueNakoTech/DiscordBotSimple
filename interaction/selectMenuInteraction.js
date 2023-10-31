@@ -22,6 +22,7 @@ module.exports = async (interaction) => {
       var selectedValue = interaction.values[0];
        // Get the selected value from the select menu
       const doc = await getFieldData(selectedValue);
+      const channel = interaction.client.channels.cache.get(channelId_ann);
       
       // Create the second embed with buttons based on the selected value
       const secondEmbed = new EmbedBuilder()
@@ -126,7 +127,7 @@ module.exports = async (interaction) => {
           },
          
         ]);
-        
+        await channel.send({embeds: [embed]})
         await reply.edit({
           
           embeds: [embed], 
