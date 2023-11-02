@@ -5,17 +5,22 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('announce')
     .setDescription('Create an announcement')
-    
+    .addStringOption(option =>
+      option
+        .setName('br')
+        .setDescription('add BR for SRB')
+        .setRequired(false))
     .addStringOption(option =>
       option
         .setName('content')
         .setDescription('Tulis Pengumuman')
         .setRequired(false))
-        .addStringOption(option =>
-            option
-              .setName('time')
-              .setDescription('Specific time for the announcement')
-              .setRequired(false)),
+    .addStringOption(option =>
+      option
+        .setName('time')
+        .setDescription('Specific time for the announcement')
+        .setRequired(false)),
+    
 
   async execute(interaction) {
     const allowedUserIds = [captainId, chiefId_1, chiefId_2];
@@ -28,7 +33,7 @@ module.exports = {
       });
     }
 
-    
+
 
     let time = interaction.options.getString('time');
 
@@ -38,14 +43,20 @@ module.exports = {
       time = '21.00';
     }
 
-    let description = interaction.options.getString('content');
+    let br = interaction.options.getString('br');
 
+    if (!br) {
+      br = '12.3';
+    }
+    let description = interaction.options.getString('content');
+   
     // Check if the 'content' option was not provided or empty
     if (!description) {
       // Use the template announcement
       description =
-        `Assalamualaikum warahmatullahi wabarakatuh , Salam sejahtera bagi kita semua , Shalom , Om Swastyastu , Namo Buddhaya , dan Salam Kebajikan\n` +
-        `diberitahukan kepada seluruh anggota squadron QED, agar diharapkan hadir pada malam hari ini pukul ${time} WIB dalam rangka melaksanakan "**Squadron Realistic Battle/SRB**".\n` +
+        `Assalamualaikum warahmatullahi wabarakatuh , Salam sejahtera bagi kita semua , Shalom , Om Swastyastu , Namo Buddhaya , dan Salam Kebajikan.\n` +
+        `Diberitahukan kepada seluruh anggota squadron QED, agar diharapkan hadir pada malam hari ini pukul **${time} WIB** dalam rangka melaksanakan "**Squadron Realistic Battle/SRB**".\n` +
+        `untuk yg mempunyai vehicle dengan **Battle Rating ${br}**.\n` +
         `sekian dan terimakasih`;
     }
 
@@ -71,8 +82,8 @@ module.exports = {
         iconURL: interaction.client.user.displayAvatarURL(),
         text: `${interaction.client.user.username}`,
       });
-    
-    setTimeout(()=> {channel.send(`<@&${wtRoleId}>`)} ,2000);
+
+    setTimeout(() => { channel.send(`<@&${wtRoleId}>`) }, 2000);
     await interaction.reply({ embeds: [embed] });
   },
 };

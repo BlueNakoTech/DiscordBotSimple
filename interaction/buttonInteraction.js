@@ -93,7 +93,7 @@ module.exports = async (interaction) => {
     const usernameInput = new TextInputBuilder()
       .setCustomId('usernameInput')
       .setLabel("Discord Username")
-      .setPlaceholder("USERNAME (not server nickname)")
+      .setPlaceholder("Username (not server nickname) ")
       .setStyle(TextInputStyle.Short);
 
     const inGameNameInput = new TextInputBuilder()
