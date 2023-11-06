@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { captainId, chiefId_1, chiefId_2, comchannel, logo_url, wtRoleId } = require("../../config.json");
+const { captainId, chiefId_1, chiefId_2, chiefId_3, adminId, comchannel, logo_url, wtRoleId } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -23,7 +23,7 @@ module.exports = {
     
 
   async execute(interaction) {
-    const allowedUserIds = [captainId, chiefId_1, chiefId_2];
+    const allowedUserIds = [captainId, chiefId_1, chiefId_2, adminId, chiefId_3];
     const channel = interaction.client.channels.cache.get(comchannel);
     if (!allowedUserIds.includes(interaction.user.id)) {
       console.log('Unrestricted Command');
@@ -84,6 +84,8 @@ module.exports = {
       });
 
     setTimeout(() => { channel.send(`<@&${wtRoleId}>`) }, 2000);
-    await interaction.reply({ embeds: [embed] });
+    const message = await interaction.reply({ embeds: [embed], fetchReply: true });
+    message.react('✅')
+    .then(() => message.react('❌'));
   },
 };
