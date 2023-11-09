@@ -30,14 +30,14 @@ module.exports = async (interaction) => {
 
     // Format the data and add it to the embed fields
     data.map((document) => {
-      const name = document.Nama.toString();
+      const name = document.nickname.toString();
       const regId = document.Discord.toString(); // Replace 'name' with your actual field name
       embedFields.push({ name: name, value: `\`Discord User : ${regId}\``, inline:false });
     });
     const options = data.map((doc) => {
       const option = new StringSelectMenuOptionBuilder()
         .setLabel(doc.Nama.toString()) // Set the label
-        .setDescription(doc.id) // Set the description (if needed)
+        .setDescription(doc.Discord.toString()) // Set the description (if needed)
         .setValue(doc.id.toString()); // Set the value
     
       return option;
