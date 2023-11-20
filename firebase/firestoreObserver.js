@@ -1,6 +1,6 @@
 const admin = require('firebase-admin');
 const serviceAccount = require('./firebase.json');
-
+const ExcelJS = require('exceljs');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -40,6 +40,28 @@ async  getDocFieldData(documentId) {
   
   console.log(fieldData);
   return jsonFile;
+},
+async fetchDataAndGenerateExcel() {
+  const snapshot = await db.collection('approved').get();
+
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Sheet 1');
+
+  // Assuming your Firestore documents have 'name' and 'age' fields
+  worksheet.columns = [
+    { header: 'Discord', key: 'Discord', width: 30 },
+    { header: 'Nama', key: 'Nama', width: 30 },
+    { header: 'IGN', key: 'IGN', width: 30 },
+    { header: 'Doc. ID', key: 'id', width: 30 },
+    // Add more columns as needed
+  ];
+
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    worksheet.addRow({ Discord: data.Discord, Nama: data.Nama, IGN: data.nickname, id: doc.id });
+  });
+
+  await workbook.xlsx.writeFile('squadron_data.xlsx');
 },
 
 async  getFieldData(documentId) {
