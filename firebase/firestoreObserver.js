@@ -24,13 +24,76 @@ module.exports = {
     console.log(jsonFile);
     return jsonString;
   },
+
+  async removeDocumentData(value) {
+    try {
+      const querySnapshot = await db.collection('approved').where('nickname', '==', value).get();
+  
+      if (querySnapshot.empty) {
+        console.log('No matching documents.');
+        return null;
+      }
+
+      const documentId = querySnapshot.docs[0].id
+      const collectionRef = db.collection("approved").doc(`${documentId}`);
+    
+      await collectionRef.delete();
+      return true;
+
+  }catch (error) {
+    console.error('Error Delete document:', error);
+    throw error;
+  }
+},
+async upDocument(docID, ign, user,) {
+  const updatedData = {
+    Discord: `${user}`,   
+    nickname: `${ign}`
+  }
+  try {
+    const documentRef = db.collection("approved").doc(`${docID}`);
+    await documentRef.update(updatedData);
+    console.log(`Document with ID ${docID} updated successfully.`);
+  } catch (error) {
+    console.error('Error updating document:', error);
+    throw error;
+  }
+},
+  async findDocumentByField(value) {
+  try {
+    const querySnapshot = await db.collection('approved').where('nickname', '==', value).get();
+
+    if (querySnapshot.empty) {
+      console.log('No matching documents.');
+      return null;
+    }
+
+    // Assuming you expect only one matching document
+    const documentSnapshot = querySnapshot.docs[0];
+ 
+    return documentSnapshot;
+    
+  } catch (error) {
+    console.error('Error finding document:', error);
+    throw error;
+  }
+},
+
   async deleteFirestoreData(documentId) {
     const collectionRef = db.collection("Formulir").doc(`${documentId}`);
     
     await collectionRef.delete();
     return true;
 },
+async getDocbyID(documentId) {
+  const Id = `${documentId}`;
+  const documentRef = db.collection('approved').doc(Id);
+  const documentData = await documentRef.get();
 
+  const jsonFile = JSON.stringify(documentData);
+    const jsonString = JSON.parse(jsonFile);
+  return jsonString;
+},
 async  getDocFieldData(documentId) {
   const Id = `${documentId}`;
   const documentRef = db.collection('Formulir').doc(Id);
@@ -75,6 +138,7 @@ async  getFieldData(documentId) {
   console.log(jsonFile);
   return JsonString;
 },
+
 
 
   async writeData(data){

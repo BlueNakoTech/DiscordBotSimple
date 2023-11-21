@@ -189,7 +189,47 @@ client.on(Events.InteractionCreate, async interaction => {
     await firestoreObserver.writeSubmittedData(name, username, ign, nation);
 		await interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
 	}
+  if (interaction.customId === 'FormEditrtr') {
+    const username = interaction.fields.getTextInputValue('usernameInput').toLowerCase();
+    const ign = interaction.fields.getTextInputValue('ignInput');
+    const token = interaction.fields.getTextInputValue('tokenInput');
+    const guild = client.guilds.cache.get(guildId);
+    const channel = guild.channels.cache.get('1098293055855018044');
+    const threadChannel = await interaction.guild.channels.fetch(kantorId);
+    const doc = await firestoreObserver.getDocbyID(token);
+  
+    const embed = new EmbedBuilder()
+              .setColor("#0099ff")
+              .setTitle("New Recruit for Q.E.D")
+              .setDescription("Apply via Discord Form (TEST)")
+              .setThumbnail(
+                logo_url
+              )
+              .addFields(
+                { name: "Discord", value: doc.Discord},
+                { name: "Nama", value: doc.Nama },
+  
+                {
+                  name: "In-game Name",
+                  value: doc.nickname,
+                  inline: true,
+                },
+                
+                { name: "Negara Utama", value: doc.Negara }
+              )
+  
+              .setFooter({
+                iconURL: interaction.client.user.displayAvatarURL(),
+                text: `${interaction.client.user.username} - Squadron Secretary`,
+              });
+     
+      // await channel.send({ embeds: [embed] });
+      await firestoreObserver.upDocument(token, ign, username);
+      await interaction.reply({ content: 'The data sucessfully change', components: [embed] });
+    }
 });
+
+
 
 fetch.defaults = {
   ...fetch.defaults,
