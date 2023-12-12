@@ -4,7 +4,7 @@
 module.exports = {
 
 async assignRole(member) {
-    const role = member.guild.roles.cache.find(r => r.name === 'War Thunder');
+    const role = member.guild.roles.cache.find(r => r.name === 'xQEDx');
     if (!role) {
       console.log(`Could not find role with name ROLE_NAME`);
       return;
