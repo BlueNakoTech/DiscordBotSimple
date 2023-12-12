@@ -1,3 +1,5 @@
 
-git fetch   
+git fetch
+:a   
 nodemon index
+goto:a
