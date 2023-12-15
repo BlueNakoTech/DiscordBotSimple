@@ -113,7 +113,7 @@ client.once(Events.ClientReady, (c) => {
 
     const guild = client.guilds.cache.get(guildId);
     const channel = guild.channels.cache.get(channelId_ann);
-    const channel_2 = guild.channels.cache.get('1098293055855018044');
+    const channel_2 = guild.channels.cache.get(kantorId);
     const jsonData = dataString.discord;
     const jsonString = JSON.parse(jsonData);
 
@@ -125,7 +125,7 @@ client.once(Events.ClientReady, (c) => {
       console.log(`Member with user tag ${jsonString} not found in guild.`);
       setTimeout(() => {
         channel_2.send({
-          content: `<@${clientId}> unable to assign role for ${jsonString}, member has not found in server.\n<@${captainId}>-sensei, please check and proceed accordingly `,
+          content: `<@${clientId}> unable to assign role for ${jsonString}, si tolol salah tulis username.\n<@${captainId}>-sensei, tolong kasih role sendiri`,
           ephemeral: true
         });
       }, 5000);
