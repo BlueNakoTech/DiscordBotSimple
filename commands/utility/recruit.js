@@ -39,7 +39,12 @@ module.exports = {
         {
           name: 'Bagaimana Cara Join?',
           value: '1. Request join squadron via in-game (WAR THUNDER)\n2. Tekan Tombol Mana Saja dan Isi Formulirnya  \n(**NOTE:** click **via Website Form** jika Noa(Bot) tidak merespon)',
-          inline: true,
+          
+        },
+        {
+          name: 'Officer Note :',
+          value: `1. Mohon tunggu form diproses oleh officer squadron \n2. Senin-Jumat sistem dibuka pukul **09.00 - 23.00** \n3. Melebihi jam diatas akan diproses esok hari. \n4. jika <@432757817431031808> sedang online aplikasi bisa langsung diproses `,
+         
         },
       ]);
       setTimeout(()=> {channel.send({

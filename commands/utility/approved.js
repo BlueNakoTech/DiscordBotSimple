@@ -1,18 +1,15 @@
 const {
   SlashCommandBuilder,
   EmbedBuilder,
-  UserManager,
-  Client,
+
 } = require("discord.js");
 const {
   deleteFirestoreData,
   getDocFieldData,
   writeData,
-  getDiscordUserId,
   moveDocument,
-  assignRole
 } = require("../../firebase/firestoreObserver");
-const { captainId, chiefId_1, chiefId_2, channelId_ann, logo_url} = require("../../config.json");
+const { captainId, auth, channelId_ann, logo_url} = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -24,7 +21,7 @@ module.exports = {
     ),
 
   async execute(interaction, client) {
-    const allowedUserIds = [captainId, chiefId_1, chiefId_2];
+    const allowedUserIds = [auth.role.admin, auth.role.officer, auth.role.captain];
     if (!allowedUserIds.includes(interaction.user.id)) {
       console.log('Unrestricted Command');
       return await interaction.reply({

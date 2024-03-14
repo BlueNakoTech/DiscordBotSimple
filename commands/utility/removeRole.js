@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { removeRole } = require('../../function/removeRole')
 
-const { wtRoleId, channelId_ann, captainId, chiefId_1, chiefId_2 } = require('../../config.json')
+const { wtRoleId, channelId_ann, auth } = require('../../config.json')
 
 
 
@@ -13,7 +13,7 @@ module.exports = {
 		.addUserOption(option => option.setName('target').setDescription('The user\'s to remove')),
 	async execute(interaction) {
 
-    const allowedUserIds = [captainId, chiefId_1, chiefId_2];
+    const allowedUserIds = [auth.role.admin, auth.role.captain, auth.role.officer];
     if (!allowedUserIds.includes(interaction.user.id)) {
       console.log(`Unrestricted Command by ${interaction.user.username}`);
       return await interaction.reply({

@@ -1,5 +1,5 @@
 const { ModalBuilder, ButtonBuilder, ButtonStyle, TextInputBuilder, ActionRowBuilder, TextInputStyle, EmbedBuilder, StringSelectMenuOptionBuilder, StringSelectMenuBuilder } = require('discord.js');
-const { captainId, chiefId_1, chiefId_2, chiefId_3, logo_url, adminId } = require("../config.json");
+const { captainId, auth, logo_url } = require("../config.json");
 const { getFirestoreData } = require("../firebase/firestoreObserver");
 module.exports = async (interaction) => {
   // if (!interaction.isButton()) return;
@@ -9,8 +9,8 @@ module.exports = async (interaction) => {
 
 
   if (interaction.customId === 'viewForm') {
-    const allowedUserIds = [captainId, chiefId_1, chiefId_2, chiefId_3];
-    const allowedRoleIds = [adminId];
+    const allowedUserIds = [auth.role.officer, auth.role.captain];
+    const allowedRoleIds = [auth.role.admin];
     if (!allowedUserIds.includes(interaction.user.id) &&
       !interaction.member.roles.cache.some((role) => allowedRoleIds.includes(role.id))) {
       console.log('Unrestricted Command');

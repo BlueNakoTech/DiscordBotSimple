@@ -4,17 +4,14 @@ const {
     ActionRowBuilder,
     EmbedBuilder,
     ButtonStyle,
-    StringSelectMenuBuilder,
-    StringSelectMenuOptionBuilder,
+  
 } = require("discord.js");
 const { findDocumentByField, removeDocumentData } = require("../../firebase/firestoreObserver");
 
 const {
     captainId,
-    chiefId_1,
-    chiefId_2,
-    chiefId_3,
-    adminId,
+  
+    
     logo_url,
     threadId,
     channelId_ann,
@@ -32,8 +29,8 @@ module.exports = {
         ),
 
     async execute(interaction) {
-        const allowedUserIds = [captainId, chiefId_1, chiefId_2, chiefId_3];
-        const allowedRoleIds = [adminId];
+        const allowedUserIds = [auth.role.officer, auth.role.captain];
+        const allowedRoleIds = [auth.role.admin];
         if (
             !allowedUserIds.includes(interaction.user.id) &&
             !interaction.member.roles.cache.some((role) =>

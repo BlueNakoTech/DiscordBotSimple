@@ -1,12 +1,12 @@
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, EmbedBuilder, ButtonBuilder, ButtonStyle} = require('discord.js');
-const { captainId, chiefId_1, chiefId_2, chiefId_3, logo_url, adminId, threadId ,channelId_ann} = require("../config.json");
+const { captainId, logo_url, threadId ,channelId_ann, auth} = require("../config.json");
 const { getFieldData, deleteFirestoreData, getDocFieldData, writeData, moveDocument} = require("../firebase/firestoreObserver");
 module.exports = async (interaction) => {
   if (!interaction.isStringSelectMenu()) return;
 
   if (interaction.customId === 'regid') {
-    const allowedUserIds = [captainId, chiefId_1, chiefId_2, chiefId_3];
-    const allowedRoleIds = [adminId];
+    const allowedUserIds = [auth.role.captain, auth.role.officer];
+    const allowedRoleIds = [auth.role.admin];
     if (!allowedUserIds.includes(interaction.user.id) &&
     !interaction.member.roles.cache.some((role) => allowedRoleIds.includes(role.id))) {
       console.log('Unrestricted Command');
@@ -71,8 +71,8 @@ module.exports = async (interaction) => {
         components: [row2],
       });
 
-      const allowedUserIds = [captainId, chiefId_1, chiefId_2];
-      const allowedRoleIds = [adminId];
+      const allowedUserIds = [auth.role.captain, auth.role.officer];
+      const allowedRoleIds = [auth.role.admin];
       const filter = async (i) => {
         if (['approved', 'rejected'].includes(i.customId) && i.user.id === interaction.user.id) {
           return true; // Interaction is valid
@@ -89,8 +89,8 @@ module.exports = async (interaction) => {
     
 
       collected.on('collect', async (buttonInteraction) => {
-        const allowedUserIds = [captainId, chiefId_1, chiefId_2];
-        const allowedRoleIds = [adminId];
+        const allowedUserIds = [auth.role.captain, auth.role.officer];
+        const allowedRoleIds = [auth.role.admin];
      
       
       if (buttonInteraction.customId === 'approved') {
@@ -134,7 +134,7 @@ module.exports = async (interaction) => {
           components: [], 
         });
       } else if (buttonInteraction.customId === 'rejected') {
-        const allowedUserIds = [captainId, chiefId_1, chiefId_2];
+        const allowedUserIds = [];
         if (!allowedUserIds.includes(interaction.user.id)) {
           console.log('Unrestricted Command');
           return await interaction.reply({

@@ -23,7 +23,7 @@ module.exports = {
     
 
   async execute(interaction) {
-    const allowedUserIds = [captainId, chiefId_1, chiefId_2, adminId, chiefId_3];
+    const allowedUserIds = [auth.role.admin, auth.role.officer, auth.role.captain];
     const channel = interaction.client.channels.cache.get(comchannel);
     if (!allowedUserIds.includes(interaction.user.id)) {
       console.log('Unrestricted Command');

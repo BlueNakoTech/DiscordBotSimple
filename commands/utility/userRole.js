@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, ApplicationCommandPermissionsManager } = require('discord.js');
 const { assignRole } = require('../../function/assignRole')
 
-const { wtRoleId, channelId_ann, captainId, chiefId_1, chiefId_2, chiefId_3, adminId } = require('../../config.json')
+const { wtRoleId, channelId_ann, auth } = require('../../config.json')
 
 
 module.exports = {
@@ -12,7 +12,8 @@ module.exports = {
 	async execute(interaction) {
 
      
-    const allowedUserIds = [captainId, chiefId_1, chiefId_2, chiefId_3, adminId];
+    const allowedUserIds = [auth.role.captain, auth.role.officer, auth.role.admin];
+    const allowedRoleIds = [auth.role.admin];
     if (!allowedUserIds.includes(interaction.user.id)) {
       console.log(`Unrestricted Command by ${interaction.user.username}`);
       return await interaction.reply({
