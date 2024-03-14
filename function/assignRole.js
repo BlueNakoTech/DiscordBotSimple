@@ -1,12 +1,13 @@
-
+const { wtRoleId} = require('../config.json')
 
 
 module.exports = {
 
 async assignRole(member) {
-    const role = member.guild.roles.cache.find(r => r.name === 'xQEDx');
+    const role = member.guild.roles.cache.get(wtRoleId);
+
     if (!role) {
-      console.log(`Could not find role with name ROLE_NAME`);
+      console.log(`Could not find role with ID ${wtRoleId}`);
       return;
     }
     try {
