@@ -2,16 +2,17 @@ const { SlashCommandBuilder,ButtonBuilder, ActionRowBuilder, EmbedBuilder, Butto
 const { getFirestoreData } = require("../../firebase/firestoreObserver");
 
 
-const { captainId, auth, logo_url, threadId ,channelId_ann} = require("../../config.json");
+const { auth } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder().setName("form").setDescription("View"),
   async execute(interaction) {
-    const allowedUserIds = [auth.role.officer, auth.role.admin];
+    const officerIds = auth.role.officer;
+    const allowedUserIds = [...officerIds, auth.role.admin, auth.role.captain];
     const allowedRoleIds = [auth.role.admin];
     if (!allowedUserIds.includes(interaction.user.id) &&
     !interaction.member.roles.cache.some((role) => allowedRoleIds.includes(role.id))) {
-      console.log('Unrestricted Command');
+      console.log(`Unrestricted Command ${interaction.user.id}`);
       return await interaction.reply({
         content: "Maaf, anda tidak diperpolehkan menggunakan perintah ini",
         ephemeral: true, // Only the user who triggered the command can see this response

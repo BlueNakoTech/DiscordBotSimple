@@ -1,13 +1,15 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { fetchDataAndGenerateExcel } = require('../../firebase/firestoreObserver'); // Adjust the path accordingly
-const { captainId, chiefId_1, chiefId_2, chiefId_3, adminId, logo_url, threadId } = require("../../config.json");
+const { auth } = require("../../config.json");
+const { Fireauth } = require('firebase-admin');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('exportdata')
 		.setDescription('Export data to Excel'),
 	async execute(interaction) {
-        const allowedUserIds = [captainId, chiefId_1, chiefId_2, chiefId_3];
-        const allowedRoleIds = [adminId];
+		const officerIds = auth.role.officer;
+        const allowedUserIds = [...officerIds, auth.role.admin];
+        const allowedRoleIds = [auth.role.admin];
         if (!allowedUserIds.includes(interaction.user.id) &&
         !interaction.member.roles.cache.some((role) => allowedRoleIds.includes(role.id))) {
           console.log('Unrestricted Command');

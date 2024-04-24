@@ -9,7 +9,8 @@ module.exports = async (interaction) => {
 
 
   if (interaction.customId === 'viewForm') {
-    const allowedUserIds = [auth.role.officer, auth.role.captain];
+    const officerIds = auth.role.officer;
+    const allowedUserIds = [...officerIds, auth.role.captain];
     const allowedRoleIds = [auth.role.admin];
     if (!allowedUserIds.includes(interaction.user.id) &&
       !interaction.member.roles.cache.some((role) => allowedRoleIds.includes(role.id))) {
