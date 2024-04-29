@@ -145,9 +145,12 @@ module.exports = async (interaction) => {
       .setLabel("Nama Panggilan")
       .setStyle(TextInputStyle.Short);
 
+      
+
     const techTreeInput = new TextInputBuilder()
       .setCustomId('techTreeInput')
       .setLabel("Tech Tree Utama / Nation")
+      .setPlaceholder("Nation dengan BR paling tinggi" )
       .setStyle(TextInputStyle.Paragraph);
 
     // An action row only holds one text input,
