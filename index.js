@@ -16,19 +16,16 @@ const {
 
 } = require("discord.js");
 const {
-  devchannel,
+
   wtRoleId,
-  channelId,
+
   clientId,
-  chiefId_1,
-  chiefId_2,
-  adminId,
+ 
   guildId,
   kantorId,
-  comchannel,
+  auyh,
   captainId,
-  channelId_ann,
-  logo_url
+
 } = require("./config.json");
 const {
   assignRole
@@ -103,7 +100,7 @@ client.once(Events.ClientReady, (c) => {
     const row = new ActionRowBuilder()
     .addComponents(viewButton);
     channel.send({
-      content : `<@${captainId}> <@${chiefId_1}> <@${chiefId_2}> \nThere is new **Recruit** form for **War Thunder** \nClick button below to view`,
+      content : `<@${captainId}> \nThere is new **Recruit** form for **War Thunder** \nClick button below to view`,
       components : [row]
     });
     
