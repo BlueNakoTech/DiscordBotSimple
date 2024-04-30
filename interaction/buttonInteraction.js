@@ -37,7 +37,7 @@ module.exports = async (interaction) => {
         data.map((document) => {
           const name = document.nickname.toString();
           const regId = document.Discord.toString(); // Replace 'name' with your actual field name
-          embedFields.push({ name: name, value: `\`Discord User : ${regId}\``, inline: false });
+          embedFields.push({ name: `\`WT Player : ${name}\``, value: `\`Discord User : ${regId}\``, inline: false });
         });
         const options = data.map((doc) => {
           const option = new StringSelectMenuOptionBuilder()
