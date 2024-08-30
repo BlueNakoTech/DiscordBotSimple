@@ -10,27 +10,18 @@ const db = admin.firestore();
 
 
 
-const collectionRef = db.collection('users');
+const collectionRef = db.collection('discordusers');
 const eventEmitter = new EventEmitter();
-
-
-// fetchDataAndGenerateExcel().then(() => {
-//   console.log('Excel file created successfully!');
-//   process.exit(0);
-// }).catch(error => {
-//   console.error('Error:', error);
-//   process.exit(1);
-// });
-
 
 collectionRef.onSnapshot((snapshot) => {
   snapshot.docChanges().forEach((change) => {
     if (change.type === 'added') {
       const data = change.doc.data();
+      data.docId = change.doc.id; // Include the document ID for reference
       eventEmitter.emit('newUsers', data);
-      
     }
   });
 });
+
 
 module.exports = eventEmitter;

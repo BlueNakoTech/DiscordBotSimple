@@ -1,6 +1,6 @@
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, EmbedBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { captainId, logo_url, threadId, channelId_ann, auth } = require("../config.json");
-const { getFieldData, deleteFirestoreData, getDocFieldData, writeData, moveDocument } = require("../firebase/firestoreObserver");
+const { getFieldData, deleteFirestoreData, getDocFieldData, writeData, moveDocument, writeCloneData } = require("../firebase/firestoreObserver");
 module.exports = async (interaction) => {
   if (!interaction.isStringSelectMenu()) return;
 
@@ -94,6 +94,7 @@ module.exports = async (interaction) => {
         if (buttonInteraction.customId === 'approved') {
           const discordId = await getDocFieldData(selectedValue);
           await writeData(discordId);
+          await writeCloneData(discordId);
           await moveDocument(selectedValue, "Formulir", "approved");
           const username = JSON.parse(discordId);
           await deleteFirestoreData(selectedValue);
@@ -131,7 +132,7 @@ module.exports = async (interaction) => {
             embeds: [embed],
             components: [],
           });
-        }else if (buttonInteraction.customId === 'hold'){
+        } else if (buttonInteraction.customId === 'hold') {
           const discordId = await getDocFieldData(selectedValue);
           const username = JSON.parse(discordId);
 
@@ -168,7 +169,7 @@ module.exports = async (interaction) => {
             components: [],
           });
         }
-        
+
         else if (buttonInteraction.customId === 'rejected') {
           const allowedUserIds = [auth.role.captain, ...officerIds];
           const allowedRoleIds = [auth.role.admin];

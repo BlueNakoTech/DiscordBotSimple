@@ -20,10 +20,10 @@ const {
   wtRoleId,
 
   clientId,
- 
+
   guildId,
   kantorId,
-  auyh,
+
   captainId,
   channelId_ann,
   logo_url,
@@ -114,12 +114,25 @@ client.once(Events.ClientReady, (c) => {
   });
 
   firestoreListenerUser.on("newUsers", async (dataString) => {
+    // Check if dataString.discord is not empty and is defined
+    if (!dataString.discord || typeof dataString.discord === 'undefined') {
+      console.log('Received empty or undefined data, ignoring.');
+      return; // Exit the function early if data is invalid
+    }
 
     const guild = client.guilds.cache.get(guildId);
     const channel = guild.channels.cache.get(channelId_ann);
     const channel_2 = guild.channels.cache.get(kantorId);
     const jsonData = dataString.discord;
-    const jsonString = JSON.parse(jsonData);
+
+    // Parse jsonData safely
+    let jsonString;
+    try {
+      jsonString = JSON.parse(jsonData);
+    } catch (error) {
+      console.log('Error parsing JSON data:', error);
+      return; // Exit the function if parsing fails
+    }
 
     const member = guild.members.cache.find(
       (member) => member.user.username === jsonString
@@ -133,11 +146,17 @@ client.once(Events.ClientReady, (c) => {
           ephemeral: true
         });
       }, 5000);
-
-
     } else {
       const mentionString = member.toString();
       assignRole(member);
+
+      // Delete the document after role assignment
+      try {
+        await firestoreObserver.deleteFirestoreDataDiscord(dataString.docId);
+        console.log(`Document with ID ${dataString.docId} deleted successfully.`);
+      } catch (error) {
+        console.error(`Failed to delete document with ID ${dataString.docId}:`, error);
+      }
 
       setTimeout(() => {
         channel.send(
