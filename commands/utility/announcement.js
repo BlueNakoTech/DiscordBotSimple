@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const {  comchannel, logo_url, wtRoleId, auth } = require("../../config.json");
+const { comchannel, logo_url, wtRoleId, auth } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -20,7 +20,7 @@ module.exports = {
         .setName('time')
         .setDescription('Specific time for the announcement')
         .setRequired(false)),
-    
+
 
   async execute(interaction) {
     const officerIds = auth.role.officer;
@@ -47,10 +47,10 @@ module.exports = {
     let br = interaction.options.getString('br');
 
     if (!br) {
-      br = '12.3';
+      br = '11.7';
     }
     let description = interaction.options.getString('content');
-   
+
     // Check if the 'content' option was not provided or empty
     if (!description) {
       // Use the template announcement
@@ -87,6 +87,6 @@ module.exports = {
     setTimeout(() => { channel.send(`<@&${wtRoleId}>`) }, 2000);
     const message = await interaction.reply({ embeds: [embed], fetchReply: true });
     message.react('✅')
-    .then(() => message.react('❌'));
+      .then(() => message.react('❌'));
   },
 };
